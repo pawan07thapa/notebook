@@ -1,0 +1,4724 @@
+1
+00:00:00,210 --> 00:00:01,220
+[Music]
+
+2
+00:00:01,220 --> 00:00:04,170
+so earlier in<font color="#CCCCCC"> section</font><font color="#E5E5E5"> 2 where</font><font color="#CCCCCC"> we talked</font>
+
+3
+00:00:04,170 --> 00:00:06,720
+<font color="#E5E5E5">about nodes module system</font><font color="#CCCCCC"> you learned</font>
+
+4
+00:00:06,720 --> 00:00:09,690
+<font color="#E5E5E5">about this HTTP module we use this to</font>
+
+5
+00:00:09,690 --> 00:00:12,679
+<font color="#E5E5E5">create a web server that listens on port</font>
+
+6
+00:00:12,679 --> 00:00:16,170
+3000 and responds<font color="#CCCCCC"> to</font><font color="#E5E5E5"> requests for these</font>
+
+7
+00:00:16,170 --> 00:00:19,199
+endpoints<font color="#CCCCCC"> so the route or such API slash</font>
+
+8
+00:00:19,199 --> 00:00:21,869
+<font color="#E5E5E5">courses now</font><font color="#CCCCCC"> while this approach is</font>
+
+9
+00:00:21,869 --> 00:00:24,330
+perfectly fine it's not<font color="#CCCCCC"> ideal for</font>
+
+10
+00:00:24,330 --> 00:00:27,180
+<font color="#CCCCCC">building a complex application because</font>
+
+11
+00:00:27,180 --> 00:00:29,609
+in a large complex application<font color="#CCCCCC"> we might</font>
+
+12
+00:00:29,609 --> 00:00:32,610
+have various<font color="#E5E5E5"> endpoints and we don't want</font>
+
+13
+00:00:32,610 --> 00:00:35,040
+to<font color="#E5E5E5"> hard-code</font><font color="#CCCCCC"> all these if statements in</font>
+
+14
+00:00:35,040 --> 00:00:37,140
+<font color="#E5E5E5">this function</font><font color="#CCCCCC"> so in this</font><font color="#E5E5E5"> section we're</font>
+
+15
+00:00:37,140 --> 00:00:39,390
+going to<font color="#E5E5E5"> look at Express which is a fast</font>
+
+16
+00:00:39,390 --> 00:00:41,340
+<font color="#E5E5E5">and lightweight framework for building</font>
+
+17
+00:00:41,340 --> 00:00:44,160
+<font color="#CCCCCC">web applications so next we're gonna</font>
+
+18
+00:00:44,160 --> 00:00:47,690
+<font color="#E5E5E5">look at restful services</font>
+
+19
+00:00:50,739 --> 00:00:53,120
+let's start<font color="#E5E5E5"> the section</font><font color="#CCCCCC"> by a brief</font>
+
+20
+00:00:53,120 --> 00:00:56,030
+introduction to restful services<font color="#E5E5E5"> also</font>
+
+21
+00:00:56,030 --> 00:00:58,789
+called<font color="#CCCCCC"> restful api s-- if you already</font>
+
+22
+00:00:58,789 --> 00:01:01,309
+know what rest is all about<font color="#E5E5E5"> feel free to</font>
+
+23
+00:01:01,309 --> 00:01:03,739
+skip<font color="#E5E5E5"> this video so earlier at</font><font color="#CCCCCC"> the</font>
+
+24
+00:01:03,739 --> 00:01:05,840
+<font color="#E5E5E5">beginning of the course</font><font color="#CCCCCC"> I introduced you</font>
+
+25
+00:01:05,840 --> 00:01:08,780
+<font color="#E5E5E5">to</font><font color="#CCCCCC"> the client-server architecture</font><font color="#E5E5E5"> so</font>
+
+26
+00:01:08,780 --> 00:01:10,940
+most if not all applications<font color="#CCCCCC"> we use</font>
+
+27
+00:01:10,940 --> 00:01:11,630
+these days
+
+28
+00:01:11,630 --> 00:01:14,390
+follow this architecture the app<font color="#E5E5E5"> itself</font>
+
+29
+00:01:14,390 --> 00:01:17,090
+is the client or<font color="#E5E5E5"> the front-end part</font>
+
+30
+00:01:17,090 --> 00:01:19,850
+<font color="#E5E5E5">under the hood it needs to talk to a</font>
+
+31
+00:01:19,850 --> 00:01:22,700
+<font color="#E5E5E5">server or the</font><font color="#CCCCCC"> back-end</font><font color="#E5E5E5"> to get or save</font>
+
+32
+00:01:22,700 --> 00:01:25,369
+the data<font color="#E5E5E5"> this communication</font><font color="#CCCCCC"> happens</font>
+
+33
+00:01:25,369 --> 00:01:28,009
+<font color="#E5E5E5">using</font><font color="#CCCCCC"> the HTTP protocol</font><font color="#E5E5E5"> the same</font>
+
+34
+00:01:28,009 --> 00:01:30,740
+<font color="#E5E5E5">protocol that powers our web so on the</font>
+
+35
+00:01:30,740 --> 00:01:33,649
+server<font color="#E5E5E5"> we expose a bunch of</font><font color="#CCCCCC"> services</font>
+
+36
+00:01:33,649 --> 00:01:36,409
+<font color="#E5E5E5">that are</font><font color="#CCCCCC"> accessible via</font><font color="#E5E5E5"> the HTTP</font>
+
+37
+00:01:36,409 --> 00:01:39,020
+protocol<font color="#E5E5E5"> the client can</font><font color="#CCCCCC"> then directly</font>
+
+38
+00:01:39,020 --> 00:01:41,899
+call<font color="#E5E5E5"> the services by sending HTTP</font>
+
+39
+00:01:41,899 --> 00:01:45,140
+requests<font color="#E5E5E5"> now this is where rest comes</font>
+
+40
+00:01:45,140 --> 00:01:46,009
+into the picture
+
+41
+00:01:46,009 --> 00:01:49,310
+<font color="#E5E5E5">rest is short for representational state</font>
+
+42
+00:01:49,310 --> 00:01:51,409
+transfer<font color="#CCCCCC"> and I know it</font><font color="#E5E5E5"> probably</font><font color="#CCCCCC"> doesn't</font>
+
+43
+00:01:51,409 --> 00:01:53,539
+make any sense to<font color="#CCCCCC"> you because it was</font>
+
+44
+00:01:53,539 --> 00:01:56,570
+introduced<font color="#E5E5E5"> by PhD student as</font><font color="#CCCCCC"> part of his</font>
+
+45
+00:01:56,570 --> 00:01:59,570
+thesis<font color="#E5E5E5"> but the theory aside rest is</font>
+
+46
+00:01:59,570 --> 00:02:01,640
+<font color="#E5E5E5">basically a convention for building</font>
+
+47
+00:02:01,640 --> 00:02:05,090
+these HTTP services so we use<font color="#E5E5E5"> simple</font>
+
+48
+00:02:05,090 --> 00:02:07,909
+HTTP protocol principles to provide
+
+49
+00:02:07,909 --> 00:02:11,090
+support to<font color="#E5E5E5"> create read update and</font><font color="#CCCCCC"> delete</font>
+
+50
+00:02:11,090 --> 00:02:14,359
+data<font color="#CCCCCC"> we refer to these</font><font color="#E5E5E5"> operations all</font>
+
+51
+00:02:14,359 --> 00:02:17,780
+together as crud operations<font color="#E5E5E5"> now let's</font>
+
+52
+00:02:17,780 --> 00:02:19,790
+<font color="#E5E5E5">explore this convention using a</font><font color="#CCCCCC"> real</font>
+
+53
+00:02:19,790 --> 00:02:21,859
+<font color="#CCCCCC">world example let's say we have a</font>
+
+54
+00:02:21,859 --> 00:02:24,079
+company<font color="#CCCCCC"> called</font><font color="#E5E5E5"> bitly for renting out</font>
+
+55
+00:02:24,079 --> 00:02:26,840
+movies we have<font color="#CCCCCC"> a client app where we</font>
+
+56
+00:02:26,840 --> 00:02:29,510
+<font color="#E5E5E5">manage the list of our customers on the</font>
+
+57
+00:02:29,510 --> 00:02:32,209
+server<font color="#E5E5E5"> we should expose a service</font><font color="#CCCCCC"> at an</font>
+
+58
+00:02:32,209 --> 00:02:36,620
+<font color="#CCCCCC">endpoint</font><font color="#E5E5E5"> like this so</font><font color="#CCCCCC"> vid lucam / api /</font>
+
+59
+00:02:36,620 --> 00:02:39,620
+customers so the client can<font color="#CCCCCC"> send HTTP</font>
+
+60
+00:02:39,620 --> 00:02:42,019
+requests<font color="#CCCCCC"> to this endpoint to</font><font color="#E5E5E5"> talk to our</font>
+
+61
+00:02:42,019 --> 00:02:44,239
+service<font color="#E5E5E5"> now a few things</font><font color="#CCCCCC"> about this</font>
+
+62
+00:02:44,239 --> 00:02:46,430
+endpoint<font color="#E5E5E5"> you need to know first of all</font>
+
+63
+00:02:46,430 --> 00:02:50,329
+<font color="#E5E5E5">the address can start with HTTP or HTTPS</font>
+
+64
+00:02:50,329 --> 00:02:52,850
+<font color="#CCCCCC">that depends on</font><font color="#E5E5E5"> the</font><font color="#CCCCCC"> application and</font><font color="#E5E5E5"> its</font>
+
+65
+00:02:52,850 --> 00:02:55,220
+requirements if you want the data to<font color="#E5E5E5"> be</font>
+
+66
+00:02:55,220 --> 00:02:57,709
+exchanged<font color="#E5E5E5"> on a secure</font><font color="#CCCCCC"> Channel you would</font>
+
+67
+00:02:57,709 --> 00:03:00,799
+use<font color="#CCCCCC"> HTTPS after that we have</font><font color="#E5E5E5"> the domain</font>
+
+68
+00:03:00,799 --> 00:03:02,030
+<font color="#CCCCCC">of the application</font>
+
+69
+00:03:02,030 --> 00:03:05,270
+next we have<font color="#E5E5E5"> slash API this is not</font>
+
+70
+00:03:05,270 --> 00:03:06,860
+compulsory<font color="#E5E5E5"> but you see a</font><font color="#CCCCCC"> lot of</font>
+
+71
+00:03:06,860 --> 00:03:09,230
+<font color="#E5E5E5">companies follow this convention to</font>
+
+72
+00:03:09,230 --> 00:03:12,110
+expose<font color="#E5E5E5"> their restful services they</font>
+
+73
+00:03:12,110 --> 00:03:14,480
+include the word<font color="#E5E5E5"> API somewhere in the</font>
+
+74
+00:03:14,480 --> 00:03:17,060
+address<font color="#E5E5E5"> it</font><font color="#CCCCCC"> can't be after the domain or</font>
+
+75
+00:03:17,060 --> 00:03:20,239
+it can be a sub<font color="#CCCCCC"> domain</font><font color="#E5E5E5"> like API that</font>
+
+76
+00:03:20,239 --> 00:03:22,819
+vidlink<font color="#E5E5E5"> aam there is no hard and fast</font>
+
+77
+00:03:22,819 --> 00:03:26,209
+rule<font color="#E5E5E5"> after</font><font color="#CCCCCC"> that we have slash customers</font>
+
+78
+00:03:26,209 --> 00:03:28,580
+which refers<font color="#CCCCCC"> to the</font><font color="#E5E5E5"> collection of</font>
+
+79
+00:03:28,580 --> 00:03:31,400
+customers in our application in the rest
+
+80
+00:03:31,400 --> 00:03:33,650
+world<font color="#CCCCCC"> you refer to</font><font color="#E5E5E5"> this part as a</font>
+
+81
+00:03:33,650 --> 00:03:36,470
+resource<font color="#E5E5E5"> we can expose our resources</font>
+
+82
+00:03:36,470 --> 00:03:39,560
+such<font color="#CCCCCC"> as customers movies rentals</font><font color="#E5E5E5"> on</font>
+
+83
+00:03:39,560 --> 00:03:42,200
+various endpoints<font color="#E5E5E5"> so</font><font color="#CCCCCC"> this is our</font>
+
+84
+00:03:42,200 --> 00:03:44,989
+<font color="#CCCCCC">endpoint</font><font color="#E5E5E5"> to</font><font color="#CCCCCC"> work</font><font color="#E5E5E5"> with the customers all</font>
+
+85
+00:03:44,989 --> 00:03:47,420
+<font color="#E5E5E5">the operations around customers such as</font>
+
+86
+00:03:47,420 --> 00:03:49,610
+creating a customer<font color="#E5E5E5"> or updating a</font>
+
+87
+00:03:49,610 --> 00:03:51,739
+customer<font color="#E5E5E5"> would be done by sending an</font>
+
+88
+00:03:51,739 --> 00:03:54,769
+HTTP<font color="#CCCCCC"> request to this endpoint the type</font>
+
+89
+00:03:54,769 --> 00:03:57,080
+of the HTTP request<font color="#E5E5E5"> determines the kind</font>
+
+90
+00:03:57,080 --> 00:04:00,050
+<font color="#E5E5E5">of the operation so</font><font color="#CCCCCC"> every HTTP request</font>
+
+91
+00:04:00,050 --> 00:04:03,350
+<font color="#E5E5E5">has what we</font><font color="#CCCCCC"> call a verb</font><font color="#E5E5E5"> or method</font><font color="#CCCCCC"> that</font>
+
+92
+00:04:03,350 --> 00:04:06,530
+determines<font color="#E5E5E5"> its type or intention here</font>
+
+93
+00:04:06,530 --> 00:04:09,560
+are the standard HTTP methods we<font color="#E5E5E5"> have</font>
+
+94
+00:04:09,560 --> 00:04:12,860
+yet<font color="#E5E5E5"> for getting data post or creating</font>
+
+95
+00:04:12,860 --> 00:04:16,310
+data<font color="#E5E5E5"> put for updating data and delayed</font>
+
+96
+00:04:16,310 --> 00:04:19,370
+<font color="#E5E5E5">for deleting data now let's explore each</font>
+
+97
+00:04:19,370 --> 00:04:22,700
+of these using<font color="#E5E5E5"> our customers example to</font>
+
+98
+00:04:22,700 --> 00:04:24,680
+get<font color="#E5E5E5"> the list of all customers we should</font>
+
+99
+00:04:24,680 --> 00:04:27,280
+send an HTTP GET request to this address
+
+100
+00:04:27,280 --> 00:04:30,470
+<font color="#CCCCCC">note the full name customers here</font><font color="#E5E5E5"> it</font>
+
+101
+00:04:30,470 --> 00:04:33,979
+indicates a list of<font color="#E5E5E5"> customers so when we</font>
+
+102
+00:04:33,979 --> 00:04:35,930
+<font color="#E5E5E5">send an HTTP GET request to this</font>
+
+103
+00:04:35,930 --> 00:04:38,300
+<font color="#E5E5E5">endpoint</font><font color="#CCCCCC"> our service should send us</font>
+
+104
+00:04:38,300 --> 00:04:41,210
+<font color="#E5E5E5">something like this so we have an array</font>
+
+105
+00:04:41,210 --> 00:04:44,360
+of customer objects if you<font color="#E5E5E5"> want a single</font>
+
+106
+00:04:44,360 --> 00:04:46,820
+<font color="#CCCCCC">customer we should include the</font><font color="#E5E5E5"> idea of</font>
+
+107
+00:04:46,820 --> 00:04:49,280
+that customer in the address then our
+
+108
+00:04:49,280 --> 00:04:51,410
+server<font color="#E5E5E5"> would respond with</font><font color="#CCCCCC"> a customer</font>
+
+109
+00:04:51,410 --> 00:04:54,080
+object<font color="#E5E5E5"> like this now to update</font><font color="#CCCCCC"> a</font>
+
+110
+00:04:54,080 --> 00:04:57,020
+customer we should send<font color="#E5E5E5"> an HTTP put</font>
+
+111
+00:04:57,020 --> 00:04:59,450
+<font color="#CCCCCC">request to this</font><font color="#E5E5E5"> endpoint</font><font color="#CCCCCC"> and note that</font>
+
+112
+00:04:59,450 --> 00:05:01,940
+again<font color="#E5E5E5"> here we're</font><font color="#CCCCCC"> specifying the idea of</font>
+
+113
+00:05:01,940 --> 00:05:05,030
+the customer to<font color="#CCCCCC"> be updated but also we</font>
+
+114
+00:05:05,030 --> 00:05:06,979
+should<font color="#E5E5E5"> include the customer</font><font color="#CCCCCC"> object</font><font color="#E5E5E5"> in</font>
+
+115
+00:05:06,979 --> 00:05:09,620
+the body<font color="#E5E5E5"> of the request so this is a</font>
+
+116
+00:05:09,620 --> 00:05:11,720
+complete representation of<font color="#E5E5E5"> the customer</font>
+
+117
+00:05:11,720 --> 00:05:14,540
+<font color="#CCCCCC">object with updated properties</font>
+
+118
+00:05:14,540 --> 00:05:16,400
+we send this<font color="#E5E5E5"> to the server and the</font>
+
+119
+00:05:16,400 --> 00:05:18,110
+server updates the customer with<font color="#E5E5E5"> the</font>
+
+120
+00:05:18,110 --> 00:05:20,530
+<font color="#CCCCCC">given ID</font><font color="#E5E5E5"> according</font><font color="#CCCCCC"> to these</font><font color="#E5E5E5"> values</font>
+
+121
+00:05:20,530 --> 00:05:23,840
+similarly<font color="#E5E5E5"> to delete a customer we should</font>
+
+122
+00:05:23,840 --> 00:05:26,120
+send<font color="#E5E5E5"> an HTTP delete request to this</font>
+
+123
+00:05:26,120 --> 00:05:28,010
+<font color="#E5E5E5">endpoint</font><font color="#CCCCCC"> but</font><font color="#E5E5E5"> here we don't</font><font color="#CCCCCC"> need to</font>
+
+124
+00:05:28,010 --> 00:05:30,140
+include the<font color="#CCCCCC"> customer object</font><font color="#E5E5E5"> in the body</font>
+
+125
+00:05:30,140 --> 00:05:32,390
+<font color="#E5E5E5">of the request because all we need to</font>
+
+126
+00:05:32,390 --> 00:05:35,540
+delete<font color="#CCCCCC"> a customer</font><font color="#E5E5E5"> is an ID and finally</font>
+
+127
+00:05:35,540 --> 00:05:38,030
+to create a customer<font color="#E5E5E5"> we need to send an</font>
+
+128
+00:05:38,030 --> 00:05:41,120
+HTTP POST<font color="#E5E5E5"> request to this endpoint note</font>
+
+129
+00:05:41,120 --> 00:05:42,770
+<font color="#E5E5E5">that here because</font><font color="#CCCCCC"> we're adding</font><font color="#E5E5E5"> a new</font>
+
+130
+00:05:42,770 --> 00:05:44,810
+<font color="#CCCCCC">customer you're not dealing with</font><font color="#E5E5E5"> a</font>
+
+131
+00:05:44,810 --> 00:05:46,970
+<font color="#E5E5E5">specific customer so we don't have the</font>
+
+132
+00:05:46,970 --> 00:05:49,520
+ID in the address<font color="#E5E5E5"> you're working with</font>
+
+133
+00:05:49,520 --> 00:05:51,350
+the collection of customers<font color="#CCCCCC"> so we're</font>
+
+134
+00:05:51,350 --> 00:05:53,630
+posting a new customer<font color="#E5E5E5"> to this collector</font>
+
+135
+00:05:53,630 --> 00:05:56,210
+and that's why we should<font color="#CCCCCC"> include the</font>
+
+136
+00:05:56,210 --> 00:05:58,220
+customer<font color="#CCCCCC"> object</font><font color="#E5E5E5"> in the body of the</font>
+
+137
+00:05:58,220 --> 00:06:00,830
+request<font color="#E5E5E5"> the server gets this object and</font>
+
+138
+00:06:00,830 --> 00:06:03,410
+creates the customer for<font color="#CCCCCC"> us</font><font color="#E5E5E5"> so this is</font>
+
+139
+00:06:03,410 --> 00:06:05,840
+<font color="#CCCCCC">the restful convention we expose our</font>
+
+140
+00:06:05,840 --> 00:06:08,210
+resources such<font color="#CCCCCC"> as customers using a</font>
+
+141
+00:06:08,210 --> 00:06:11,480
+simple<font color="#E5E5E5"> meaningful address and support</font>
+
+142
+00:06:11,480 --> 00:06:13,670
+various operations around them such<font color="#E5E5E5"> as</font>
+
+143
+00:06:13,670 --> 00:06:16,300
+creating<font color="#CCCCCC"> or updating them using standard</font>
+
+144
+00:06:16,300 --> 00:06:19,460
+HTTP methods so throughout<font color="#E5E5E5"> this section</font>
+
+145
+00:06:19,460 --> 00:06:21,590
+<font color="#E5E5E5">you're going to learn how to use the</font>
+
+146
+00:06:21,590 --> 00:06:24,470
+<font color="#E5E5E5">Express framework to build a restful</font>
+
+147
+00:06:24,470 --> 00:06:26,420
+service<font color="#E5E5E5"> from managing the list of</font>
+
+148
+00:06:26,420 --> 00:06:29,000
+customers<font color="#CCCCCC"> however in this section</font><font color="#E5E5E5"> we</font>
+
+149
+00:06:29,000 --> 00:06:31,550
+won't be<font color="#E5E5E5"> doing any database work because</font>
+
+150
+00:06:31,550 --> 00:06:33,770
+<font color="#E5E5E5">that will bring in</font><font color="#CCCCCC"> additional complexity</font>
+
+151
+00:06:33,770 --> 00:06:36,440
+<font color="#CCCCCC">our focus will be purely on building</font>
+
+152
+00:06:36,440 --> 00:06:39,260
+HTTP services and we will use a simple
+
+153
+00:06:39,260 --> 00:06:41,480
+array in memory<font color="#E5E5E5"> to keep the list of our</font>
+
+154
+00:06:41,480 --> 00:06:44,000
+customers<font color="#E5E5E5"> later in the course we'll look</font>
+
+155
+00:06:44,000 --> 00:06:46,990
+at<font color="#CCCCCC"> using a database</font>
+
+156
+00:06:50,270 --> 00:06:52,460
+so here's the code<font color="#CCCCCC"> that we</font><font color="#E5E5E5"> wrote in the</font>
+
+157
+00:06:52,460 --> 00:06:55,069
+<font color="#E5E5E5">section about node core where I</font>
+
+158
+00:06:55,069 --> 00:06:58,099
+introduce<font color="#CCCCCC"> you to the HTTP module so we</font>
+
+159
+00:06:58,099 --> 00:07:00,590
+<font color="#CCCCCC">can see with HTTP module we can create a</font>
+
+160
+00:07:00,590 --> 00:07:02,930
+web server<font color="#E5E5E5"> here we have a callback</font>
+
+161
+00:07:02,930 --> 00:07:05,240
+<font color="#E5E5E5">function</font><font color="#CCCCCC"> that takes two</font><font color="#E5E5E5"> parameters</font>
+
+162
+00:07:05,240 --> 00:07:08,660
+<font color="#CCCCCC">request and response</font><font color="#E5E5E5"> and with this</font>
+
+163
+00:07:08,660 --> 00:07:11,599
+request object<font color="#E5E5E5"> we can check the URL of</font>
+
+164
+00:07:11,599 --> 00:07:14,389
+<font color="#E5E5E5">the incoming request so with this we can</font>
+
+165
+00:07:14,389 --> 00:07:16,880
+define<font color="#E5E5E5"> various</font><font color="#CCCCCC"> routes</font><font color="#E5E5E5"> for our</font>
+
+166
+00:07:16,880 --> 00:07:19,400
+application so<font color="#CCCCCC"> if you have a request for</font>
+
+167
+00:07:19,400 --> 00:07:22,460
+let's say slash API slash courses this
+
+168
+00:07:22,460 --> 00:07:24,020
+<font color="#CCCCCC">is how we're going</font><font color="#E5E5E5"> to respond to the</font>
+
+169
+00:07:24,020 --> 00:07:26,599
+client now<font color="#CCCCCC"> while</font><font color="#E5E5E5"> this</font><font color="#CCCCCC"> approach certainly</font>
+
+170
+00:07:26,599 --> 00:07:29,539
+works<font color="#E5E5E5"> it's not</font><font color="#CCCCCC"> very maintainable because</font>
+
+171
+00:07:29,539 --> 00:07:31,280
+as we define more<font color="#E5E5E5"> routes for our</font>
+
+172
+00:07:31,280 --> 00:07:33,440
+application<font color="#E5E5E5"> we need</font><font color="#CCCCCC"> to</font><font color="#E5E5E5"> add more if</font>
+
+173
+00:07:33,440 --> 00:07:37,039
+blocks in this<font color="#CCCCCC"> callback function</font><font color="#E5E5E5"> so</font>
+
+174
+00:07:37,039 --> 00:07:39,139
+that's<font color="#E5E5E5"> when a framework comes into the</font>
+
+175
+00:07:39,139 --> 00:07:41,180
+picture<font color="#CCCCCC"> a framework</font><font color="#E5E5E5"> gives our</font>
+
+176
+00:07:41,180 --> 00:07:43,940
+application<font color="#E5E5E5"> a proper structure so we</font><font color="#CCCCCC"> can</font>
+
+177
+00:07:43,940 --> 00:07:46,460
+easily add more<font color="#E5E5E5"> routes while keeping our</font>
+
+178
+00:07:46,460 --> 00:07:49,430
+application<font color="#CCCCCC"> code maintainable now there</font>
+
+179
+00:07:49,430 --> 00:07:51,050
+are various frameworks<font color="#E5E5E5"> out</font><font color="#CCCCCC"> there for</font>
+
+180
+00:07:51,050 --> 00:07:53,060
+building web applications<font color="#E5E5E5"> and web</font>
+
+181
+00:07:53,060 --> 00:07:55,610
+servers on top of<font color="#E5E5E5"> note the most popular</font>
+
+182
+00:07:55,610 --> 00:07:59,090
+one is Express so if you head over to
+
+183
+00:07:59,090 --> 00:08:05,330
+NPM<font color="#CCCCCC"> JSE org or NPM J</font><font color="#E5E5E5"> is calm here</font><font color="#CCCCCC"> let's</font>
+
+184
+00:08:05,330 --> 00:08:10,490
+search for<font color="#E5E5E5"> Express so the current</font>
+
+185
+00:08:10,490 --> 00:08:14,419
+version is version 4.2<font color="#E5E5E5"> 16.2 let's have a</font>
+
+186
+00:08:14,419 --> 00:08:16,550
+quick look<font color="#CCCCCC"> here</font><font color="#E5E5E5"> so here on the right</font>
+
+187
+00:08:16,550 --> 00:08:20,210
+<font color="#CCCCCC">side look at the statistics there have</font>
+
+188
+00:08:20,210 --> 00:08:23,120
+<font color="#E5E5E5">been over 700,000 downloads in</font><font color="#CCCCCC"> the last</font>
+
+189
+00:08:23,120 --> 00:08:26,270
+day and over 15 million downloads<font color="#E5E5E5"> in the</font>
+
+190
+00:08:26,270 --> 00:08:28,789
+<font color="#E5E5E5">last month it's a very popular framework</font>
+
+191
+00:08:28,789 --> 00:08:31,669
+it's also<font color="#E5E5E5"> very</font><font color="#CCCCCC"> fast</font><font color="#E5E5E5"> lightweight</font><font color="#CCCCCC"> and</font>
+
+192
+00:08:31,669 --> 00:08:35,208
+perfectly documented so now back in the
+
+193
+00:08:35,208 --> 00:08:37,370
+<font color="#E5E5E5">terminal let's create a new folder</font><font color="#CCCCCC"> for</font>
+
+194
+00:08:37,370 --> 00:08:39,849
+<font color="#E5E5E5">this section so I'm gonna call</font><font color="#CCCCCC"> this</font>
+
+195
+00:08:39,849 --> 00:08:44,720
+Express demo now let's go inside this
+
+196
+00:08:44,720 --> 00:08:51,320
+folder run<font color="#E5E5E5"> NPM init with yes flag so now</font>
+
+197
+00:08:51,320 --> 00:08:54,740
+we have a package JSON file and finally
+
+198
+00:08:54,740 --> 00:08:59,170
+<font color="#CCCCCC">we</font><font color="#E5E5E5"> can install Express</font>
+
+199
+00:09:00,100 --> 00:09:02,630
+beautiful in the next<font color="#E5E5E5"> lecture</font><font color="#CCCCCC"> I'm gonna</font>
+
+200
+00:09:02,630 --> 00:09:04,580
+<font color="#E5E5E5">show you how to build</font><font color="#CCCCCC"> your first web</font>
+
+201
+00:09:04,580 --> 00:09:07,780
+server using<font color="#E5E5E5"> Express</font>
+
+202
+00:09:11,540 --> 00:09:14,270
+all right now<font color="#E5E5E5"> in</font><font color="#CCCCCC"> vs code</font><font color="#E5E5E5"> let's add a new</font>
+
+203
+00:09:14,270 --> 00:09:18,950
+file index the<font color="#CCCCCC"> jas we could also call</font><font color="#E5E5E5"> it</font>
+
+204
+00:09:18,950 --> 00:09:22,240
+<font color="#CCCCCC">app to J's</font><font color="#E5E5E5"> it doesn't really matter</font><font color="#CCCCCC"> so</font>
+
+205
+00:09:22,240 --> 00:09:25,190
+<font color="#CCCCCC">in this file</font><font color="#E5E5E5"> first we want to load the</font>
+
+206
+00:09:25,190 --> 00:09:27,620
+<font color="#E5E5E5">Express module so we</font><font color="#CCCCCC"> use our require</font>
+
+207
+00:09:27,620 --> 00:09:30,950
+function<font color="#CCCCCC"> give it</font><font color="#E5E5E5"> the name</font><font color="#CCCCCC"> of</font><font color="#E5E5E5"> our module</font>
+
+208
+00:09:30,950 --> 00:09:34,580
+which<font color="#CCCCCC"> is Express now this returns a</font>
+
+209
+00:09:34,580 --> 00:09:40,580
+<font color="#CCCCCC">function we call that</font><font color="#E5E5E5"> Express</font><font color="#CCCCCC"> okay</font><font color="#E5E5E5"> now</font>
+
+210
+00:09:40,580 --> 00:09:43,610
+we need to call this function like this
+
+211
+00:09:43,610 --> 00:09:46,100
+<font color="#CCCCCC">and as you can see this returns an</font>
+
+212
+00:09:46,100 --> 00:09:50,510
+object<font color="#CCCCCC"> of type Express</font><font color="#E5E5E5"> by convention we</font>
+
+213
+00:09:50,510 --> 00:09:53,420
+<font color="#E5E5E5">call this object</font><font color="#CCCCCC"> app so we store the</font>
+
+214
+00:09:53,420 --> 00:10:00,170
+result in a constant called<font color="#E5E5E5"> app so this</font>
+
+215
+00:10:00,170 --> 00:10:02,660
+represents our application now<font color="#CCCCCC"> this app</font>
+
+216
+00:10:02,660 --> 00:10:05,960
+object has a bunch of useful<font color="#E5E5E5"> methods we</font>
+
+217
+00:10:05,960 --> 00:10:12,340
+<font color="#CCCCCC">have methods</font><font color="#E5E5E5"> like get post put and</font>
+
+218
+00:10:12,340 --> 00:10:16,220
+<font color="#E5E5E5">delete all these methods correspond to</font>
+
+219
+00:10:16,220 --> 00:10:19,280
+HTTP verbs or HTTP methods that<font color="#E5E5E5"> I told</font>
+
+220
+00:10:19,280 --> 00:10:22,040
+you<font color="#E5E5E5"> about</font><font color="#CCCCCC"> earlier</font><font color="#E5E5E5"> in this section</font><font color="#CCCCCC"> so if</font>
+
+221
+00:10:22,040 --> 00:10:24,380
+you want<font color="#E5E5E5"> to handle an HTTP POST request</font>
+
+222
+00:10:24,380 --> 00:10:27,710
+<font color="#E5E5E5">to an</font><font color="#CCCCCC"> endpoint you would use app that</font>
+
+223
+00:10:27,710 --> 00:10:30,050
+post<font color="#E5E5E5"> now in this lecture we just</font><font color="#CCCCCC"> want to</font>
+
+224
+00:10:30,050 --> 00:10:33,050
+use app<font color="#E5E5E5"> but yet</font><font color="#CCCCCC"> we</font><font color="#E5E5E5"> want to implement a</font>
+
+225
+00:10:33,050 --> 00:10:35,570
+couple of endpoints<font color="#CCCCCC"> that respond</font><font color="#E5E5E5"> to an</font>
+
+226
+00:10:35,570 --> 00:10:38,780
+HTTP GET request<font color="#E5E5E5"> so this method takes</font>
+
+227
+00:10:38,780 --> 00:10:42,170
+two arguments<font color="#CCCCCC"> the first argument</font><font color="#E5E5E5"> is the</font>
+
+228
+00:10:42,170 --> 00:10:45,260
+<font color="#CCCCCC">pass</font><font color="#E5E5E5"> or the URL so here I'm going to use</font>
+
+229
+00:10:45,260 --> 00:10:48,050
+<font color="#E5E5E5">slash to represent the route of the</font>
+
+230
+00:10:48,050 --> 00:10:49,600
+<font color="#CCCCCC">website</font>
+
+231
+00:10:49,600 --> 00:10:52,060
+now the second argument is a callback
+
+232
+00:10:52,060 --> 00:10:54,280
+function this is the function that<font color="#E5E5E5"> will</font>
+
+233
+00:10:54,280 --> 00:10:56,500
+<font color="#CCCCCC">be called when we have an HTTP GET</font>
+
+234
+00:10:56,500 --> 00:11:00,160
+request to this<font color="#CCCCCC"> endpoint okay so this</font>
+
+235
+00:11:00,160 --> 00:11:01,990
+<font color="#E5E5E5">callback function shall have two</font>
+
+236
+00:11:01,990 --> 00:11:07,690
+<font color="#E5E5E5">arguments request and response so this</font>
+
+237
+00:11:07,690 --> 00:11:11,830
+goes to<font color="#E5E5E5"> a code block now this request</font>
+
+238
+00:11:11,830 --> 00:11:14,200
+object has a bunch of useful<font color="#CCCCCC"> properties</font>
+
+239
+00:11:14,200 --> 00:11:16,360
+<font color="#E5E5E5">that gives us information about the</font>
+
+240
+00:11:16,360 --> 00:11:18,790
+incoming<font color="#CCCCCC"> request</font><font color="#E5E5E5"> if you want to learn</font>
+
+241
+00:11:18,790 --> 00:11:21,220
+<font color="#E5E5E5">about all these properties</font><font color="#CCCCCC"> it's best to</font>
+
+242
+00:11:21,220 --> 00:11:23,020
+look at the<font color="#E5E5E5"> Express documentation</font>
+
+243
+00:11:23,020 --> 00:11:24,580
+<font color="#E5E5E5">because in this course we're</font><font color="#CCCCCC"> going to</font>
+
+244
+00:11:24,580 --> 00:11:26,530
+<font color="#E5E5E5">use only a handful of these properties</font>
+
+245
+00:11:26,530 --> 00:11:32,020
+<font color="#CCCCCC">so head over to</font><font color="#E5E5E5"> Express Jas comm on the</font>
+
+246
+00:11:32,020 --> 00:11:37,330
+top look<font color="#E5E5E5"> at API reference version</font><font color="#CCCCCC"> 4 now</font>
+
+247
+00:11:37,330 --> 00:11:39,570
+here you can<font color="#E5E5E5"> see</font><font color="#CCCCCC"> the</font><font color="#E5E5E5"> request object</font><font color="#CCCCCC"> and</font>
+
+248
+00:11:39,570 --> 00:11:41,530
+below<font color="#CCCCCC"> that you can</font><font color="#E5E5E5"> see all the</font>
+
+249
+00:11:41,530 --> 00:11:43,930
+properties<font color="#E5E5E5"> that are</font><font color="#CCCCCC"> available</font><font color="#E5E5E5"> to you</font>
+
+250
+00:11:43,930 --> 00:11:46,480
+you have base URL<font color="#E5E5E5"> we have body to read</font>
+
+251
+00:11:46,480 --> 00:11:49,330
+the body of the request<font color="#E5E5E5"> cookies fresh</font>
+
+252
+00:11:49,330 --> 00:11:53,100
+<font color="#E5E5E5">host name IP method original URL</font>
+
+253
+00:11:53,100 --> 00:11:56,560
+<font color="#E5E5E5">parameters and so on so back to our code</font>
+
+254
+00:11:56,560 --> 00:11:59,860
+<font color="#E5E5E5">when we</font><font color="#CCCCCC"> get an HTTP GET</font><font color="#E5E5E5"> request to the</font>
+
+255
+00:11:59,860 --> 00:12:02,110
+root of<font color="#E5E5E5"> our website you're gonna respond</font>
+
+256
+00:12:02,110 --> 00:12:04,950
+with<font color="#CCCCCC"> a</font><font color="#E5E5E5"> hello world</font><font color="#CCCCCC"> message</font><font color="#E5E5E5"> so response</font>
+
+257
+00:12:04,950 --> 00:12:11,830
+dots and hello world<font color="#E5E5E5"> so this</font><font color="#CCCCCC"> is</font><font color="#E5E5E5"> how we</font>
+
+258
+00:12:11,830 --> 00:12:14,770
+define<font color="#E5E5E5"> a route we specify the path or</font>
+
+259
+00:12:14,770 --> 00:12:18,220
+the URL<font color="#E5E5E5"> and a callback function which is</font>
+
+260
+00:12:18,220 --> 00:12:21,700
+<font color="#E5E5E5">also called a route handler now finally</font>
+
+261
+00:12:21,700 --> 00:12:24,220
+we need to<font color="#E5E5E5"> listen on a given point so we</font>
+
+262
+00:12:24,220 --> 00:12:28,270
+call app that listen we give it a port
+
+263
+00:12:28,270 --> 00:12:31,600
+number<font color="#CCCCCC"> like 3,000</font><font color="#E5E5E5"> and optionally we can</font>
+
+264
+00:12:31,600 --> 00:12:33,880
+<font color="#E5E5E5">pass a function</font><font color="#CCCCCC"> that will be</font><font color="#E5E5E5"> called when</font>
+
+265
+00:12:33,880 --> 00:12:35,950
+<font color="#CCCCCC">the application starts listening</font><font color="#E5E5E5"> on the</font>
+
+266
+00:12:35,950 --> 00:12:39,520
+given port so once<font color="#CCCCCC"> again we use the</font>
+
+267
+00:12:39,520 --> 00:12:41,830
+<font color="#E5E5E5">arrow function syntax to display</font>
+
+268
+00:12:41,830 --> 00:12:44,800
+something<font color="#E5E5E5"> on the console so console</font><font color="#CCCCCC"> dot</font>
+
+269
+00:12:44,800 --> 00:12:52,560
+<font color="#CCCCCC">log</font><font color="#E5E5E5"> listening on port</font><font color="#CCCCCC"> 3,000</font>
+
+270
+00:12:52,640 --> 00:12:58,750
+now back<font color="#E5E5E5"> in the terminal note index</font><font color="#CCCCCC"> j s</font>
+
+271
+00:12:58,750 --> 00:13:02,060
+<font color="#CCCCCC">okay</font><font color="#E5E5E5"> we're listening on port 3000 now</font>
+
+272
+00:13:02,060 --> 00:13:05,089
+let's switch over<font color="#E5E5E5"> to Chrome and</font><font color="#CCCCCC"> go to</font>
+
+273
+00:13:05,089 --> 00:13:08,930
+localhost<font color="#CCCCCC"> port 3000 so here's our hello</font>
+
+274
+00:13:08,930 --> 00:13:11,060
+<font color="#CCCCCC">word</font><font color="#E5E5E5"> message now let's define another</font>
+
+275
+00:13:11,060 --> 00:13:15,490
+<font color="#CCCCCC">route so once again we're gonna call app</font>
+
+276
+00:13:15,490 --> 00:13:19,610
+that get now this<font color="#E5E5E5"> one is going</font><font color="#CCCCCC"> to be</font>
+
+277
+00:13:19,610 --> 00:13:24,200
+slash API slash courses once again<font color="#E5E5E5"> we</font>
+
+278
+00:13:24,200 --> 00:13:26,870
+<font color="#E5E5E5">pass a function with two arguments</font><font color="#CCCCCC"> then</font>
+
+279
+00:13:26,870 --> 00:13:30,110
+<font color="#CCCCCC">it's request and response</font><font color="#E5E5E5"> and this goes</font>
+
+280
+00:13:30,110 --> 00:13:34,940
+to<font color="#E5E5E5"> a code block now in a</font><font color="#CCCCCC"> real world</font>
+
+281
+00:13:34,940 --> 00:13:36,950
+scenario<font color="#E5E5E5"> here you want to get the list</font>
+
+282
+00:13:36,950 --> 00:13:38,870
+of courses from<font color="#E5E5E5"> the database</font><font color="#CCCCCC"> and return</font>
+
+283
+00:13:38,870 --> 00:13:41,029
+them<font color="#E5E5E5"> but as I told you</font><font color="#CCCCCC"> before in this</font>
+
+284
+00:13:41,029 --> 00:13:41,420
+section
+
+285
+00:13:41,420 --> 00:13:44,209
+our focus is purely<font color="#E5E5E5"> on building these</font>
+
+286
+00:13:44,209 --> 00:13:46,040
+endpoints<font color="#CCCCCC"> you're not gonna do any</font>
+
+287
+00:13:46,040 --> 00:13:48,470
+database work so I'm gonna simply return
+
+288
+00:13:48,470 --> 00:13:53,120
+an array<font color="#E5E5E5"> of numbers so response that's</font>
+
+289
+00:13:53,120 --> 00:13:56,630
+and it<font color="#CCCCCC"> passed an</font><font color="#E5E5E5"> array of three</font><font color="#CCCCCC"> numbers</font>
+
+290
+00:13:56,630 --> 00:13:59,240
+<font color="#CCCCCC">in the future we can</font><font color="#E5E5E5"> replace these</font>
+
+291
+00:13:59,240 --> 00:14:02,510
+numbers with actual course objects so
+
+292
+00:14:02,510 --> 00:14:06,350
+save now back in the terminal<font color="#CCCCCC"> we</font><font color="#E5E5E5"> have to</font>
+
+293
+00:14:06,350 --> 00:14:08,660
+stop this process<font color="#E5E5E5"> and started</font><font color="#CCCCCC"> the game</font>
+
+294
+00:14:08,660 --> 00:14:12,860
+so press<font color="#CCCCCC"> ctrl +</font><font color="#E5E5E5"> C okay one more time</font>
+
+295
+00:14:12,860 --> 00:14:18,380
+<font color="#E5E5E5">node index J is now back in Chrome let's</font>
+
+296
+00:14:18,380 --> 00:14:20,980
+head over to<font color="#E5E5E5"> slash API slash courses</font>
+
+297
+00:14:20,980 --> 00:14:23,779
+look we have an array<font color="#E5E5E5"> of three numbers</font>
+
+298
+00:14:23,779 --> 00:14:26,810
+<font color="#E5E5E5">beautiful so this is what I want you</font><font color="#CCCCCC"> to</font>
+
+299
+00:14:26,810 --> 00:14:28,910
+pay<font color="#CCCCCC"> attention to here in this</font>
+
+300
+00:14:28,910 --> 00:14:31,610
+<font color="#CCCCCC">implementation we don't have those eve</font>
+
+301
+00:14:31,610 --> 00:14:35,029
+blocks<font color="#E5E5E5"> we define new routes by calling</font>
+
+302
+00:14:35,029 --> 00:14:38,540
+app that<font color="#CCCCCC"> yet and with this structure as</font>
+
+303
+00:14:38,540 --> 00:14:40,940
+our application grows<font color="#E5E5E5"> we can move some</font>
+
+304
+00:14:40,940 --> 00:14:43,490
+<font color="#CCCCCC">of these routes to different</font><font color="#E5E5E5"> files for</font>
+
+305
+00:14:43,490 --> 00:14:45,199
+<font color="#CCCCCC">example we can move all the route</font>
+
+306
+00:14:45,199 --> 00:14:47,750
+related to courses to a separate file
+
+307
+00:14:47,750 --> 00:14:49,430
+like courses that<font color="#E5E5E5"> Jas</font>
+
+308
+00:14:49,430 --> 00:14:51,740
+so<font color="#E5E5E5"> Express gives our application is</font>
+
+309
+00:14:51,740 --> 00:14:55,480
+skeleton is structure
+
+310
+00:14:58,730 --> 00:15:01,250
+so far you have noticed<font color="#CCCCCC"> that every time</font>
+
+311
+00:15:01,250 --> 00:15:04,310
+<font color="#CCCCCC">we</font><font color="#E5E5E5"> make a change to this code you</font><font color="#CCCCCC"> have</font>
+
+312
+00:15:04,310 --> 00:15:06,260
+<font color="#E5E5E5">to go back in the terminal</font><font color="#CCCCCC"> and stop this</font>
+
+313
+00:15:06,260 --> 00:15:08,420
+process<font color="#E5E5E5"> and started the game this is</font>
+
+314
+00:15:08,420 --> 00:15:10,280
+very tedious<font color="#E5E5E5"> so I'm gonna show you a</font>
+
+315
+00:15:10,280 --> 00:15:12,740
+better way<font color="#E5E5E5"> we're gonna</font><font color="#CCCCCC"> install a</font><font color="#E5E5E5"> note</font>
+
+316
+00:15:12,740 --> 00:15:15,620
+package called<font color="#CCCCCC"> note Mon</font><font color="#E5E5E5"> which is short</font>
+
+317
+00:15:15,620 --> 00:15:19,150
+for<font color="#CCCCCC"> node monitor so in the terminal and</font>
+
+318
+00:15:19,150 --> 00:15:22,670
+<font color="#CCCCCC">p.m. install - G</font><font color="#E5E5E5"> because we want</font><font color="#CCCCCC"> to</font>
+
+319
+00:15:22,670 --> 00:15:24,560
+install this globally so we can run<font color="#E5E5E5"> it</font>
+
+320
+00:15:24,560 --> 00:15:27,500
+anywhere and the name of the package is
+
+321
+00:15:27,500 --> 00:15:30,200
+node Mon now as I<font color="#CCCCCC"> told you before if</font>
+
+322
+00:15:30,200 --> 00:15:32,240
+you're on Mac<font color="#E5E5E5"> and you haven't configured</font>
+
+323
+00:15:32,240 --> 00:15:35,240
+the permissions properly<font color="#E5E5E5"> in it put sudo</font>
+
+324
+00:15:35,240 --> 00:15:38,320
+at the front
+
+325
+00:15:41,370 --> 00:15:44,760
+<font color="#CCCCCC">all right</font><font color="#E5E5E5"> no one is installed</font><font color="#CCCCCC"> so</font><font color="#E5E5E5"> with</font>
+
+326
+00:15:44,760 --> 00:15:47,010
+this instead<font color="#E5E5E5"> of running our application</font>
+
+327
+00:15:47,010 --> 00:15:53,670
+using<font color="#E5E5E5"> node we use node Mon</font><font color="#CCCCCC"> okay now you</font>
+
+328
+00:15:53,670 --> 00:15:55,950
+can<font color="#CCCCCC"> see node</font><font color="#E5E5E5"> Mon is watching all the</font>
+
+329
+00:15:55,950 --> 00:15:57,810
+files in this folder
+
+330
+00:15:57,810 --> 00:16:01,200
+any files with<font color="#E5E5E5"> any extensions so if we</font>
+
+331
+00:16:01,200 --> 00:16:03,540
+come back<font color="#CCCCCC"> here and make a</font><font color="#E5E5E5"> simple</font><font color="#CCCCCC"> change</font>
+
+332
+00:16:03,540 --> 00:16:08,070
+and then save the<font color="#CCCCCC"> file now look in the</font>
+
+333
+00:16:08,070 --> 00:16:10,830
+terminal node<font color="#CCCCCC"> Hmong restarted our</font>
+
+334
+00:16:10,830 --> 00:16:13,140
+application or our process due<font color="#CCCCCC"> to</font>
+
+335
+00:16:13,140 --> 00:16:15,120
+changes so we don't<font color="#E5E5E5"> have to do this</font>
+
+336
+00:16:15,120 --> 00:16:18,240
+manually anymore now back in<font color="#CCCCCC"> the browser</font>
+
+337
+00:16:18,240 --> 00:16:21,690
+<font color="#CCCCCC">if you send a request</font><font color="#E5E5E5"> to</font><font color="#CCCCCC"> the root of</font><font color="#E5E5E5"> the</font>
+
+338
+00:16:21,690 --> 00:16:24,360
+<font color="#CCCCCC">website we can</font><font color="#E5E5E5"> see our new</font><font color="#CCCCCC"> message</font>
+
+339
+00:16:24,360 --> 00:16:27,260
+displayed here
+
+340
+00:16:30,570 --> 00:16:32,430
+now one<font color="#CCCCCC"> thing</font><font color="#E5E5E5"> we need</font><font color="#CCCCCC"> to improve</font><font color="#E5E5E5"> in this</font>
+
+341
+00:16:32,430 --> 00:16:35,730
+<font color="#E5E5E5">code is this hard-coded value for the</font>
+
+342
+00:16:35,730 --> 00:16:38,340
+port so<font color="#E5E5E5"> we have used</font><font color="#CCCCCC"> 3000</font><font color="#E5E5E5"> as an</font>
+
+343
+00:16:38,340 --> 00:16:41,250
+arbitrary<font color="#CCCCCC"> number</font><font color="#E5E5E5"> while this may work on</font>
+
+344
+00:16:41,250 --> 00:16:43,230
+your development<font color="#CCCCCC"> machine</font><font color="#E5E5E5"> it's unlikely</font>
+
+345
+00:16:43,230 --> 00:16:45,060
+that<font color="#E5E5E5"> this is gonna work in a production</font>
+
+346
+00:16:45,060 --> 00:16:47,400
+environment<font color="#CCCCCC"> because when you deploy</font><font color="#E5E5E5"> this</font>
+
+347
+00:16:47,400 --> 00:16:49,680
+application<font color="#E5E5E5"> to a hosting environment the</font>
+
+348
+00:16:49,680 --> 00:16:51,900
+port is dynamically assigned by the
+
+349
+00:16:51,900 --> 00:16:54,350
+hosting environment so we can't<font color="#CCCCCC"> rely on</font>
+
+350
+00:16:54,350 --> 00:16:58,410
+<font color="#E5E5E5">3000 to be available</font><font color="#CCCCCC"> so the way to fix</font>
+
+351
+00:16:58,410 --> 00:17:00,500
+this<font color="#E5E5E5"> is by using an environment variable</font>
+
+352
+00:17:00,500 --> 00:17:03,570
+<font color="#CCCCCC">so typically in hosting environments for</font>
+
+353
+00:17:03,570 --> 00:17:05,849
+node applications we have<font color="#CCCCCC"> this</font>
+
+354
+00:17:05,849 --> 00:17:08,869
+environment<font color="#E5E5E5"> variable called</font><font color="#CCCCCC"> port an</font>
+
+355
+00:17:08,869 --> 00:17:10,980
+environment variable<font color="#CCCCCC"> is basically a</font>
+
+356
+00:17:10,980 --> 00:17:13,170
+variable<font color="#CCCCCC"> that is part of</font><font color="#E5E5E5"> the environment</font>
+
+357
+00:17:13,170 --> 00:17:17,010
+in<font color="#CCCCCC"> which a</font><font color="#E5E5E5"> process runs its value is set</font>
+
+358
+00:17:17,010 --> 00:17:19,500
+outside<font color="#E5E5E5"> this application I'm gonna show</font>
+
+359
+00:17:19,500 --> 00:17:21,960
+you how that<font color="#E5E5E5"> works in a second so in</font>
+
+360
+00:17:21,960 --> 00:17:23,880
+this application<font color="#E5E5E5"> we</font><font color="#CCCCCC"> need to read</font><font color="#E5E5E5"> the</font>
+
+361
+00:17:23,880 --> 00:17:26,730
+value of this port environment variable
+
+362
+00:17:26,730 --> 00:17:28,800
+and the way we do that<font color="#E5E5E5"> is by</font><font color="#CCCCCC"> using the</font>
+
+363
+00:17:28,800 --> 00:17:32,070
+process<font color="#CCCCCC"> object so we</font><font color="#E5E5E5"> have this</font><font color="#CCCCCC"> global</font>
+
+364
+00:17:32,070 --> 00:17:35,100
+object called process this<font color="#E5E5E5"> object has a</font>
+
+365
+00:17:35,100 --> 00:17:37,560
+property<font color="#E5E5E5"> called</font><font color="#CCCCCC"> M which</font><font color="#E5E5E5"> is short for</font>
+
+366
+00:17:37,560 --> 00:17:40,320
+environment variables<font color="#E5E5E5"> and after that we</font>
+
+367
+00:17:40,320 --> 00:17:42,390
+add<font color="#CCCCCC"> the name of our environment variable</font>
+
+368
+00:17:42,390 --> 00:17:46,590
+in this case port so if<font color="#E5E5E5"> this is set</font>
+
+369
+00:17:46,590 --> 00:17:49,020
+<font color="#E5E5E5">we're gonna use this otherwise we're</font>
+
+370
+00:17:49,020 --> 00:17:52,560
+gonna use<font color="#CCCCCC"> 3000 now we can store</font><font color="#E5E5E5"> the</font>
+
+371
+00:17:52,560 --> 00:17:57,050
+result in<font color="#E5E5E5"> a constant called port okay</font>
+
+372
+00:17:57,050 --> 00:18:00,270
+let's delete this<font color="#E5E5E5"> and finally we need to</font>
+
+373
+00:18:00,270 --> 00:18:04,890
+<font color="#E5E5E5">replace 3000 with port and also change</font>
+
+374
+00:18:04,890 --> 00:18:07,470
+our message accordingly<font color="#E5E5E5"> so I'm going</font><font color="#CCCCCC"> to</font>
+
+375
+00:18:07,470 --> 00:18:11,760
+replace a<font color="#E5E5E5"> single coat with backtick so</font>
+
+376
+00:18:11,760 --> 00:18:14,850
+we can use a template string and here
+
+377
+00:18:14,850 --> 00:18:17,400
+we're gonna replace 3000 with a<font color="#E5E5E5"> dynamic</font>
+
+378
+00:18:17,400 --> 00:18:20,430
+value so I'm here at dollar sign curly
+
+379
+00:18:20,430 --> 00:18:23,520
+braces<font color="#E5E5E5"> and then add</font><font color="#CCCCCC"> our constant in this</font>
+
+380
+00:18:23,520 --> 00:18:28,160
+case port<font color="#E5E5E5"> okay now back</font><font color="#CCCCCC"> in the terminal</font>
+
+381
+00:18:28,160 --> 00:18:30,510
+<font color="#E5E5E5">let's run this application using node</font>
+
+382
+00:18:30,510 --> 00:18:32,750
+<font color="#CCCCCC">maaan</font>
+
+383
+00:18:32,940 --> 00:18:35,369
+so on this machine<font color="#E5E5E5"> you can see I don't</font>
+
+384
+00:18:35,369 --> 00:18:37,470
+<font color="#E5E5E5">have an environment variable called port</font>
+
+385
+00:18:37,470 --> 00:18:42,179
+that's why<font color="#CCCCCC"> 3000 is used as the port</font><font color="#E5E5E5"> for</font>
+
+386
+00:18:42,179 --> 00:18:44,609
+this web server<font color="#E5E5E5"> now I'm going to set an</font>
+
+387
+00:18:44,609 --> 00:18:47,609
+<font color="#CCCCCC">environment variable so let's stop this</font>
+
+388
+00:18:47,609 --> 00:18:51,419
+<font color="#CCCCCC">process on Mac we can set an environment</font>
+
+389
+00:18:51,419 --> 00:18:54,749
+variable<font color="#E5E5E5"> by executing the export command</font>
+
+390
+00:18:54,749 --> 00:18:57,889
+<font color="#E5E5E5">if you're on Windows you should use set</font>
+
+391
+00:18:57,889 --> 00:19:02,729
+so export or set now<font color="#E5E5E5"> we add the name of</font>
+
+392
+00:19:02,729 --> 00:19:04,289
+<font color="#CCCCCC">the</font><font color="#E5E5E5"> environment variable in this case</font>
+
+393
+00:19:04,289 --> 00:19:07,820
+port and set its value<font color="#E5E5E5"> I'm going</font><font color="#CCCCCC"> to use</font>
+
+394
+00:19:07,820 --> 00:19:11,909
+<font color="#CCCCCC">5,000 so now we have this environment</font>
+
+395
+00:19:11,909 --> 00:19:14,580
+<font color="#E5E5E5">variable called port with the value of</font>
+
+396
+00:19:14,580 --> 00:19:17,159
+<font color="#CCCCCC">5,000</font><font color="#E5E5E5"> with this when we run this</font>
+
+397
+00:19:17,159 --> 00:19:21,070
+application<font color="#CCCCCC"> node man</font>
+
+398
+00:19:21,070 --> 00:19:23,380
+you can see that<font color="#E5E5E5"> now we are</font><font color="#CCCCCC"> listening on</font>
+
+399
+00:19:23,380 --> 00:19:27,880
+port<font color="#CCCCCC"> 5000 so this is the proper</font><font color="#E5E5E5"> way</font><font color="#CCCCCC"> to</font>
+
+400
+00:19:27,880 --> 00:19:30,429
+<font color="#E5E5E5">assign a port to your node applications</font>
+
+401
+00:19:30,429 --> 00:19:32,889
+you<font color="#E5E5E5"> should attempt to read the value</font><font color="#CCCCCC"> of</font>
+
+402
+00:19:32,889 --> 00:19:35,110
+an environment variable called port<font color="#E5E5E5"> if</font>
+
+403
+00:19:35,110 --> 00:19:36,850
+there is a<font color="#E5E5E5"> value you</font><font color="#CCCCCC"> should</font><font color="#E5E5E5"> use that</font>
+
+404
+00:19:36,850 --> 00:19:40,000
+<font color="#E5E5E5">otherwise use an</font><font color="#CCCCCC"> arbitrary number</font><font color="#E5E5E5"> for</font>
+
+405
+00:19:40,000 --> 00:19:42,020
+your development<font color="#CCCCCC"> machine</font>
+
+406
+00:19:42,020 --> 00:19:44,080
+you
+
+407
+00:19:46,270 --> 00:19:48,400
+<font color="#CCCCCC">all right so currently we have a route</font>
+
+408
+00:19:48,400 --> 00:19:51,460
+<font color="#E5E5E5">for getting the list of courses now in</font>
+
+409
+00:19:51,460 --> 00:19:52,630
+this<font color="#E5E5E5"> lecture</font><font color="#CCCCCC"> I'm going</font><font color="#E5E5E5"> to show you how</font>
+
+410
+00:19:52,630 --> 00:19:55,330
+<font color="#E5E5E5">to create a route</font><font color="#CCCCCC"> to get a</font><font color="#E5E5E5"> single course</font>
+
+411
+00:19:55,330 --> 00:19:57,910
+so earlier in the section<font color="#E5E5E5"> where I talked</font>
+
+412
+00:19:57,910 --> 00:20:01,000
+about<font color="#E5E5E5"> restful services you learn that in</font>
+
+413
+00:20:01,000 --> 00:20:03,309
+order<font color="#CCCCCC"> to</font><font color="#E5E5E5"> get a single course we should</font>
+
+414
+00:20:03,309 --> 00:20:05,559
+include the idea<font color="#CCCCCC"> of</font><font color="#E5E5E5"> the course and the</font>
+
+415
+00:20:05,559 --> 00:20:08,320
+URL so our<font color="#CCCCCC"> endpoint</font><font color="#E5E5E5"> should be like this</font>
+
+416
+00:20:08,320 --> 00:20:11,830
+<font color="#E5E5E5">slash API slash courses slash</font><font color="#CCCCCC"> one</font>
+
+417
+00:20:11,830 --> 00:20:13,960
+assuming<font color="#CCCCCC"> that one is the idea of</font><font color="#E5E5E5"> the</font>
+
+418
+00:20:13,960 --> 00:20:16,150
+course<font color="#E5E5E5"> so let's see how we can implement</font>
+
+419
+00:20:16,150 --> 00:20:21,820
+a route<font color="#CCCCCC"> like this so app that get we add</font>
+
+420
+00:20:21,820 --> 00:20:24,960
+the path that is slash API slash courses
+
+421
+00:20:24,960 --> 00:20:27,510
+and here we<font color="#CCCCCC"> need</font><font color="#E5E5E5"> to define a parameter</font>
+
+422
+00:20:27,510 --> 00:20:32,590
+<font color="#E5E5E5">so we add : and ID so idea is</font><font color="#CCCCCC"> the name</font>
+
+423
+00:20:32,590 --> 00:20:34,210
+<font color="#CCCCCC">of our parameter here you could</font><font color="#E5E5E5"> use</font>
+
+424
+00:20:34,210 --> 00:20:36,250
+anything it<font color="#E5E5E5"> doesn't have to be ID it</font>
+
+425
+00:20:36,250 --> 00:20:40,290
+could be course ID but ID is shorter and
+
+426
+00:20:40,290 --> 00:20:44,290
+more conventional<font color="#E5E5E5"> now we had our route</font>
+
+427
+00:20:44,290 --> 00:20:47,490
+handler function so request and response
+
+428
+00:20:47,490 --> 00:20:51,670
+goes to now in<font color="#E5E5E5"> order to read this</font>
+
+429
+00:20:51,670 --> 00:20:56,260
+parameter we use request dot params<font color="#E5E5E5"> dot</font>
+
+430
+00:20:56,260 --> 00:20:59,980
+ID so for now<font color="#CCCCCC"> let's just</font><font color="#E5E5E5"> send this to</font>
+
+431
+00:20:59,980 --> 00:21:02,170
+the<font color="#E5E5E5"> client so resource</font>
+
+432
+00:21:02,170 --> 00:21:07,740
+let's send<font color="#CCCCCC"> okay</font><font color="#E5E5E5"> back in the browser</font><font color="#CCCCCC"> now</font>
+
+433
+00:21:07,740 --> 00:21:10,390
+<font color="#CCCCCC">let's head over to slash</font><font color="#E5E5E5"> API is that</font>
+
+434
+00:21:10,390 --> 00:21:13,480
+<font color="#E5E5E5">courses slash one so you can</font><font color="#CCCCCC"> see we</font>
+
+435
+00:21:13,480 --> 00:21:15,220
+successfully read the value<font color="#E5E5E5"> of this</font>
+
+436
+00:21:15,220 --> 00:21:18,370
+parameter<font color="#E5E5E5"> also it is</font><font color="#CCCCCC"> possible to</font><font color="#E5E5E5"> have</font>
+
+437
+00:21:18,370 --> 00:21:20,890
+<font color="#E5E5E5">multiple parameters in a route for</font>
+
+438
+00:21:20,890 --> 00:21:22,480
+example imagine<font color="#E5E5E5"> you're building a</font>
+
+439
+00:21:22,480 --> 00:21:25,720
+service<font color="#E5E5E5"> for powering a block so we could</font>
+
+440
+00:21:25,720 --> 00:21:31,270
+have a route like<font color="#CCCCCC"> this</font><font color="#E5E5E5"> posts here month</font>
+
+441
+00:21:31,270 --> 00:21:33,400
+<font color="#E5E5E5">so we have two parameters</font><font color="#CCCCCC"> and with this</font>
+
+442
+00:21:33,400 --> 00:21:36,100
+<font color="#E5E5E5">we can get all the posts for the given</font>
+
+443
+00:21:36,100 --> 00:21:39,700
+month and<font color="#E5E5E5"> the given here now we can read</font>
+
+444
+00:21:39,700 --> 00:21:41,200
+<font color="#E5E5E5">these parameters just</font><font color="#CCCCCC"> like before</font>
+
+445
+00:21:41,200 --> 00:21:44,250
+<font color="#CCCCCC">so requested params</font><font color="#E5E5E5"> that year or</font><font color="#CCCCCC"> a month</font>
+
+446
+00:21:44,250 --> 00:21:46,809
+for<font color="#E5E5E5"> this demo let me show you this</font>
+
+447
+00:21:46,809 --> 00:21:50,590
+<font color="#E5E5E5">requested params object so let's delete</font>
+
+448
+00:21:50,590 --> 00:21:55,179
+this save back in the<font color="#E5E5E5"> browser</font><font color="#CCCCCC"> now let's</font>
+
+449
+00:21:55,179 --> 00:21:59,950
+head over to<font color="#E5E5E5"> API posts 2018</font>
+
+450
+00:21:59,950 --> 00:22:02,380
+<font color="#E5E5E5">and one so this is our request params</font>
+
+451
+00:22:02,380 --> 00:22:05,139
+object<font color="#E5E5E5"> we have two properties year and</font>
+
+452
+00:22:05,139 --> 00:22:07,779
+month<font color="#E5E5E5"> and their name based on a route</font>
+
+453
+00:22:07,779 --> 00:22:10,690
+parameters<font color="#CCCCCC"> we</font><font color="#E5E5E5"> express we can also get</font>
+
+454
+00:22:10,690 --> 00:22:13,330
+<font color="#CCCCCC">Kariya string parameters</font><font color="#E5E5E5"> these are</font>
+
+455
+00:22:13,330 --> 00:22:16,210
+parameters<font color="#CCCCCC"> that we add in the URL after</font>
+
+456
+00:22:16,210 --> 00:22:19,570
+<font color="#CCCCCC">question mark for example we can get all</font>
+
+457
+00:22:19,570 --> 00:22:23,080
+the posts in January 2018<font color="#E5E5E5"> and sort them</font>
+
+458
+00:22:23,080 --> 00:22:25,710
+<font color="#E5E5E5">by their name so we add a question mark</font>
+
+459
+00:22:25,710 --> 00:22:29,710
+<font color="#E5E5E5">sort by set this to name this is a query</font>
+
+460
+00:22:29,710 --> 00:22:32,169
+<font color="#CCCCCC">string parameter we use query string</font>
+
+461
+00:22:32,169 --> 00:22:35,110
+parameters to provide additional data to
+
+462
+00:22:35,110 --> 00:22:37,179
+our<font color="#E5E5E5"> back-end services so we use route</font>
+
+463
+00:22:37,179 --> 00:22:39,820
+parameters for essential or required
+
+464
+00:22:39,820 --> 00:22:42,130
+values whereas we use query string
+
+465
+00:22:42,130 --> 00:22:44,130
+parameters for anything that is optional
+
+466
+00:22:44,130 --> 00:22:46,480
+now let me show<font color="#E5E5E5"> you how to read query</font>
+
+467
+00:22:46,480 --> 00:22:50,590
+parameters so I can view scope<font color="#E5E5E5"> instead</font>
+
+468
+00:22:50,590 --> 00:22:53,039
+of requested params we use request dot
+
+469
+00:22:53,039 --> 00:22:58,929
+query<font color="#E5E5E5"> save back in</font><font color="#CCCCCC"> Chrome and this is</font>
+
+470
+00:22:58,929 --> 00:22:59,559
+what we get
+
+471
+00:22:59,559 --> 00:23:02,139
+so query parameters are stored<font color="#E5E5E5"> in an</font>
+
+472
+00:23:02,139 --> 00:23:06,389
+object<font color="#E5E5E5"> with a bunch of key value</font><font color="#CCCCCC"> pairs</font>
+
+473
+00:23:08,650 --> 00:23:11,200
+hi guys<font color="#CCCCCC"> thank you for watching my</font><font color="#E5E5E5"> Noah</font>
+
+474
+00:23:11,200 --> 00:23:13,270
+tutorial<font color="#CCCCCC"> I wanted</font><font color="#E5E5E5"> to let you</font><font color="#CCCCCC"> know that</font>
+
+475
+00:23:13,270 --> 00:23:15,910
+<font color="#CCCCCC">this tutorial</font><font color="#E5E5E5"> is the first</font><font color="#CCCCCC"> hour</font><font color="#E5E5E5"> of my</font>
+
+476
+00:23:15,910 --> 00:23:18,010
+complete<font color="#E5E5E5"> note course where you will</font>
+
+477
+00:23:18,010 --> 00:23:20,920
+<font color="#CCCCCC">learn how to build a real</font><font color="#E5E5E5"> restful api</font>
+
+478
+00:23:20,920 --> 00:23:24,880
+<font color="#E5E5E5">using node Express and MongoDB all of</font>
+
+479
+00:23:24,880 --> 00:23:26,680
+that recorded with the latest version of
+
+480
+00:23:26,680 --> 00:23:29,620
+node and modern JavaScript<font color="#CCCCCC"> so</font><font color="#E5E5E5"> you will</font>
+
+481
+00:23:29,620 --> 00:23:32,050
+learn<font color="#CCCCCC"> new and modern ways of</font><font color="#E5E5E5"> building</font>
+
+482
+00:23:32,050 --> 00:23:33,430
+<font color="#CCCCCC">applications with node</font>
+
+483
+00:23:33,430 --> 00:23:35,830
+unlike other<font color="#E5E5E5"> courses that only show you</font>
+
+484
+00:23:35,830 --> 00:23:38,320
+<font color="#E5E5E5">simple the only examples like how to</font>
+
+485
+00:23:38,320 --> 00:23:40,720
+build a to-do app we're gonna work on a
+
+486
+00:23:40,720 --> 00:23:43,930
+<font color="#CCCCCC">real-world</font><font color="#E5E5E5"> project</font><font color="#CCCCCC"> a</font><font color="#E5E5E5"> restful api for</font><font color="#CCCCCC"> a</font>
+
+487
+00:23:43,930 --> 00:23:46,270
+video rental application if<font color="#E5E5E5"> you have</font>
+
+488
+00:23:46,270 --> 00:23:48,490
+taken<font color="#E5E5E5"> any of</font><font color="#CCCCCC"> my courses you know i don't</font>
+
+489
+00:23:48,490 --> 00:23:49,990
+waste your<font color="#CCCCCC"> time by explaining</font><font color="#E5E5E5"> the</font>
+
+490
+00:23:49,990 --> 00:23:52,240
+obvious like what a code editor<font color="#E5E5E5"> or</font>
+
+491
+00:23:52,240 --> 00:23:54,430
+command<font color="#E5E5E5"> prompt is we're gonna get</font>
+
+492
+00:23:54,430 --> 00:23:56,590
+straight<font color="#E5E5E5"> to the</font><font color="#CCCCCC"> business and as part of</font>
+
+493
+00:23:56,590 --> 00:23:58,360
+this<font color="#CCCCCC"> i'll be</font><font color="#E5E5E5"> touching on various</font>
+
+494
+00:23:58,360 --> 00:24:00,430
+important topics that<font color="#CCCCCC"> you need to</font>
+
+495
+00:24:00,430 --> 00:24:03,070
+understand really<font color="#E5E5E5"> well including working</font>
+
+496
+00:24:03,070 --> 00:24:05,760
+with node package manager or<font color="#CCCCCC"> npm</font>
+
+497
+00:24:05,760 --> 00:24:08,140
+asynchronous javascript including
+
+498
+00:24:08,140 --> 00:24:10,980
+callbacks promises async<font color="#E5E5E5"> and await</font>
+
+499
+00:24:10,980 --> 00:24:13,690
+implementing crud operations<font color="#E5E5E5"> data</font>
+
+500
+00:24:13,690 --> 00:24:15,790
+validations<font color="#E5E5E5"> authentication and</font>
+
+501
+00:24:15,790 --> 00:24:18,070
+authorization<font color="#E5E5E5"> using JSON web tokens</font>
+
+502
+00:24:18,070 --> 00:24:21,070
+including role management<font color="#CCCCCC"> handling and</font>
+
+503
+00:24:21,070 --> 00:24:23,290
+<font color="#E5E5E5">login errors unit and integration</font>
+
+504
+00:24:23,290 --> 00:24:26,530
+testing test-driven development<font color="#E5E5E5"> so you</font>
+
+505
+00:24:26,530 --> 00:24:28,540
+will see<font color="#E5E5E5"> I</font><font color="#CCCCCC"> will build a feature</font><font color="#E5E5E5"> from A</font>
+
+506
+00:24:28,540 --> 00:24:30,880
+to Z using test-driven development<font color="#E5E5E5"> or</font>
+
+507
+00:24:30,880 --> 00:24:33,340
+TDD<font color="#E5E5E5"> and finally</font><font color="#CCCCCC"> we'll deploy this</font>
+
+508
+00:24:33,340 --> 00:24:35,650
+application<font color="#CCCCCC"> to the cloud</font><font color="#E5E5E5"> throughout the</font>
+
+509
+00:24:35,650 --> 00:24:37,660
+<font color="#E5E5E5">course I will share with you</font><font color="#CCCCCC"> lots of</font>
+
+510
+00:24:37,660 --> 00:24:40,080
+clean coding and refactoring techniques
+
+511
+00:24:40,080 --> 00:24:43,330
+<font color="#E5E5E5">security best practices useful libraries</font>
+
+512
+00:24:43,330 --> 00:24:44,980
+to use as part of your<font color="#CCCCCC"> development</font>
+
+513
+00:24:44,980 --> 00:24:46,990
+<font color="#E5E5E5">common mistakes that many</font><font color="#CCCCCC"> note</font>
+
+514
+00:24:46,990 --> 00:24:49,420
+developers make and much much<font color="#E5E5E5"> more</font>
+
+515
+00:24:49,420 --> 00:24:51,940
+the course is currently<font color="#E5E5E5"> 14 hours long</font>
+
+516
+00:24:51,940 --> 00:24:54,160
+<font color="#CCCCCC">and I'm planning to</font><font color="#E5E5E5"> add more content to</font>
+
+517
+00:24:54,160 --> 00:24:56,080
+it in the<font color="#E5E5E5"> future you can watch this</font>
+
+518
+00:24:56,080 --> 00:24:58,540
+course as many times as you want<font color="#E5E5E5"> and if</font>
+
+519
+00:24:58,540 --> 00:25:00,340
+<font color="#E5E5E5">you watch it to the</font><font color="#CCCCCC"> end you will get a</font>
+
+520
+00:25:00,340 --> 00:25:02,410
+certificate of<font color="#E5E5E5"> completion that we can</font>
+
+521
+00:25:02,410 --> 00:25:05,320
+add<font color="#E5E5E5"> to</font><font color="#CCCCCC"> your</font><font color="#E5E5E5"> resume so if you're serious</font>
+
+522
+00:25:05,320 --> 00:25:08,140
+<font color="#CCCCCC">about adding no to your</font><font color="#E5E5E5"> resume I highly</font>
+
+523
+00:25:08,140 --> 00:25:09,610
+encourage you<font color="#E5E5E5"> to</font><font color="#CCCCCC"> enroll in the course</font>
+
+524
+00:25:09,610 --> 00:25:12,070
+<font color="#E5E5E5">and don't waste your</font><font color="#CCCCCC"> time jumping from</font>
+
+525
+00:25:12,070 --> 00:25:15,190
+one tutorial to another<font color="#E5E5E5"> so click on the</font>
+
+526
+00:25:15,190 --> 00:25:17,080
+<font color="#E5E5E5">link in the video description</font><font color="#CCCCCC"> to enrol</font><font color="#E5E5E5"> I</font>
+
+527
+00:25:17,080 --> 00:25:20,160
+hope to see you in the course
+
+528
+00:25:23,970 --> 00:25:25,740
+<font color="#CCCCCC">alright now let's implement a new</font>
+
+529
+00:25:25,740 --> 00:25:28,620
+<font color="#E5E5E5">endpoint</font><font color="#CCCCCC"> to get a single</font><font color="#E5E5E5"> course from</font><font color="#CCCCCC"> the</font>
+
+530
+00:25:28,620 --> 00:25:32,519
+server<font color="#E5E5E5"> so first of all let's change this</font>
+
+531
+00:25:32,519 --> 00:25:36,720
+<font color="#CCCCCC">back to courses and add the ID parameter</font>
+
+532
+00:25:36,720 --> 00:25:38,700
+here<font color="#E5E5E5"> okay</font>
+
+533
+00:25:38,700 --> 00:25:43,200
+now on the top let's<font color="#E5E5E5"> define an array</font>
+
+534
+00:25:43,200 --> 00:25:47,429
+called courses so constant courses we
+
+535
+00:25:47,429 --> 00:25:50,820
+set this<font color="#E5E5E5"> to an array and in this array</font>
+
+536
+00:25:50,820 --> 00:25:54,200
+we're going<font color="#E5E5E5"> to have three course objects</font>
+
+537
+00:25:54,200 --> 00:25:57,149
+so each object should have a couple of
+
+538
+00:25:57,149 --> 00:26:01,409
+properties<font color="#E5E5E5"> ID and name and of course we</font>
+
+539
+00:26:01,409 --> 00:26:03,570
+can have more<font color="#E5E5E5"> but for simplicity I'm</font>
+
+540
+00:26:03,570 --> 00:26:05,549
+just<font color="#CCCCCC"> gonna</font><font color="#E5E5E5"> stick to two properties here</font>
+
+541
+00:26:05,549 --> 00:26:08,629
+okay now let's duplicate this<font color="#E5E5E5"> line and</font>
+
+542
+00:26:08,629 --> 00:26:12,330
+change the<font color="#CCCCCC"> IDs as well as the name two</font>
+
+543
+00:26:12,330 --> 00:26:16,620
+and three so we have two endpoints<font color="#CCCCCC"> want</font>
+
+544
+00:26:16,620 --> 00:26:19,320
+to get all the courses<font color="#E5E5E5"> and the other</font><font color="#CCCCCC"> two</font>
+
+545
+00:26:19,320 --> 00:26:22,320
+get a single<font color="#E5E5E5"> course right</font><font color="#CCCCCC"> in the first</font>
+
+546
+00:26:22,320 --> 00:26:26,100
+one we're<font color="#E5E5E5"> gonna return</font><font color="#CCCCCC"> our courses are</font>
+
+547
+00:26:26,100 --> 00:26:27,179
+<font color="#CCCCCC">a-okay</font>
+
+548
+00:26:27,179 --> 00:26:29,549
+right in the second one<font color="#CCCCCC"> we should write</font>
+
+549
+00:26:29,549 --> 00:26:32,009
+some logic to<font color="#E5E5E5"> look for the course with</font>
+
+550
+00:26:32,009 --> 00:26:36,470
+the given ID so let me<font color="#E5E5E5"> delete this first</font>
+
+551
+00:26:36,470 --> 00:26:40,470
+we're gonna call<font color="#E5E5E5"> courses that find this</font>
+
+552
+00:26:40,470 --> 00:26:42,330
+is a<font color="#E5E5E5"> method</font><font color="#CCCCCC"> that is available</font><font color="#E5E5E5"> on every</font>
+
+553
+00:26:42,330 --> 00:26:45,779
+<font color="#E5E5E5">array in JavaScript</font><font color="#CCCCCC"> as an argument</font><font color="#E5E5E5"> to</font>
+
+554
+00:26:45,779 --> 00:26:47,750
+this method we<font color="#E5E5E5"> need to pass a function</font>
+
+555
+00:26:47,750 --> 00:26:50,879
+this function will<font color="#E5E5E5"> be</font><font color="#CCCCCC"> used to</font><font color="#E5E5E5"> find a</font>
+
+556
+00:26:50,879 --> 00:26:54,000
+course<font color="#E5E5E5"> that matches a given criteria so</font>
+
+557
+00:26:54,000 --> 00:26:57,120
+<font color="#E5E5E5">we use the arrow function syntax C goes</font>
+
+558
+00:26:57,120 --> 00:27:00,149
+to<font color="#E5E5E5"> and here we write some logic</font><font color="#CCCCCC"> that</font>
+
+559
+00:27:00,149 --> 00:27:02,970
+returns a boolean value<font color="#E5E5E5"> this boolean</font>
+
+560
+00:27:02,970 --> 00:27:05,250
+value determines if this course is the
+
+561
+00:27:05,250 --> 00:27:08,100
+<font color="#CCCCCC">one</font><font color="#E5E5E5"> we're looking</font><font color="#CCCCCC"> for or not</font><font color="#E5E5E5"> so see that</font>
+
+562
+00:27:08,100 --> 00:27:13,379
+<font color="#CCCCCC">ID should equal request that</font><font color="#E5E5E5"> params dot</font>
+
+563
+00:27:13,379 --> 00:27:14,509
+ID
+
+564
+00:27:14,509 --> 00:27:17,789
+however this requested prams that ID
+
+565
+00:27:17,789 --> 00:27:20,970
+<font color="#E5E5E5">returns a string so in order for</font><font color="#CCCCCC"> this</font>
+
+566
+00:27:20,970 --> 00:27:23,370
+<font color="#CCCCCC">comparison to work properly we need</font><font color="#E5E5E5"> to</font>
+
+567
+00:27:23,370 --> 00:27:26,190
+parse<font color="#CCCCCC"> this string into an integer so we</font>
+
+568
+00:27:26,190 --> 00:27:28,950
+<font color="#E5E5E5">call parse int which is one of</font><font color="#CCCCCC"> the</font>
+
+569
+00:27:28,950 --> 00:27:31,080
+<font color="#CCCCCC">global functions available</font><font color="#E5E5E5"> in JavaScript</font>
+
+570
+00:27:31,080 --> 00:27:35,009
+<font color="#E5E5E5">and then get the result and store it and</font>
+
+571
+00:27:35,009 --> 00:27:37,340
+a constant called<font color="#E5E5E5"> course</font>
+
+572
+00:27:37,340 --> 00:27:39,820
+now you might be<font color="#E5E5E5"> asking why I didn't</font><font color="#CCCCCC"> use</font>
+
+573
+00:27:39,820 --> 00:27:43,009
+var here<font color="#E5E5E5"> well that would be perfectly</font>
+
+574
+00:27:43,009 --> 00:27:45,710
+fine<font color="#CCCCCC"> and that's how most</font><font color="#E5E5E5"> JavaScript code</font>
+
+575
+00:27:45,710 --> 00:27:48,080
+out<font color="#CCCCCC"> there is</font><font color="#E5E5E5"> written but going forward</font>
+
+576
+00:27:48,080 --> 00:27:52,070
+<font color="#E5E5E5">it's best to drop var and either use let</font>
+
+577
+00:27:52,070 --> 00:27:57,289
+or<font color="#E5E5E5"> Const we use let if you want to</font>
+
+578
+00:27:57,289 --> 00:27:59,659
+define a variable<font color="#CCCCCC"> that we can reset</font>
+
+579
+00:27:59,659 --> 00:28:03,830
+later<font color="#E5E5E5"> and we use Const if you want to</font>
+
+580
+00:28:03,830 --> 00:28:06,320
+define<font color="#E5E5E5"> a constant in this</font><font color="#CCCCCC"> case I</font><font color="#E5E5E5"> don't</font>
+
+581
+00:28:06,320 --> 00:28:08,659
+<font color="#E5E5E5">want to reset the course later in this</font>
+
+582
+00:28:08,659 --> 00:28:11,269
+function but again that's perfectly fine
+
+583
+00:28:11,269 --> 00:28:13,129
+to use let here as well it's just
+
+584
+00:28:13,129 --> 00:28:16,100
+<font color="#E5E5E5">personal preference so</font><font color="#CCCCCC"> we get the course</font>
+
+585
+00:28:16,100 --> 00:28:20,330
+object now<font color="#E5E5E5"> if this course doesn't</font><font color="#CCCCCC"> have a</font>
+
+586
+00:28:20,330 --> 00:28:23,179
+<font color="#E5E5E5">value in other words if we don't find a</font>
+
+587
+00:28:23,179 --> 00:28:26,659
+course<font color="#E5E5E5"> for</font><font color="#CCCCCC"> the given ID by convention we</font>
+
+588
+00:28:26,659 --> 00:28:29,269
+should return a response<font color="#E5E5E5"> with the HTTP</font>
+
+589
+00:28:29,269 --> 00:28:34,159
+status code<font color="#E5E5E5"> of 404 that means object not</font>
+
+590
+00:28:34,159 --> 00:28:36,200
+found<font color="#CCCCCC"> so this is one of</font><font color="#E5E5E5"> the conventions</font>
+
+591
+00:28:36,200 --> 00:28:39,409
+<font color="#E5E5E5">of restful api so if the client asks for</font>
+
+592
+00:28:39,409 --> 00:28:41,509
+a resource<font color="#E5E5E5"> but that resource does not</font>
+
+593
+00:28:41,509 --> 00:28:43,759
+exist on<font color="#CCCCCC"> the server</font><font color="#E5E5E5"> we should return a</font>
+
+594
+00:28:43,759 --> 00:28:47,210
+<font color="#E5E5E5">response with</font><font color="#CCCCCC"> the status code of 404</font><font color="#E5E5E5"> so</font>
+
+595
+00:28:47,210 --> 00:28:53,080
+here<font color="#E5E5E5"> we call response dot status 404 and</font>
+
+596
+00:28:53,080 --> 00:28:55,399
+optionally we<font color="#CCCCCC"> can send a message to the</font>
+
+597
+00:28:55,399 --> 00:29:00,740
+<font color="#E5E5E5">client as well so send the course with</font>
+
+598
+00:29:00,740 --> 00:29:07,009
+the given ID was not found<font color="#E5E5E5"> okay now</font>
+
+599
+00:29:07,009 --> 00:29:09,139
+otherwise<font color="#E5E5E5"> if we do have a course with</font>
+
+600
+00:29:09,139 --> 00:29:10,909
+<font color="#E5E5E5">that ID we're simply going to return</font>
+
+601
+00:29:10,909 --> 00:29:14,090
+<font color="#CCCCCC">that to</font><font color="#E5E5E5"> the client so response that's</font>
+
+602
+00:29:14,090 --> 00:29:18,950
+and<font color="#E5E5E5"> course now let's test this so back</font>
+
+603
+00:29:18,950 --> 00:29:22,460
+in the browser<font color="#E5E5E5"> let's head over to slash</font>
+
+604
+00:29:22,460 --> 00:29:25,970
+API slash courses slash<font color="#CCCCCC"> one so we</font><font color="#E5E5E5"> have a</font>
+
+605
+00:29:25,970 --> 00:29:27,860
+course with the ID<font color="#E5E5E5"> one and that's why we</font>
+
+606
+00:29:27,860 --> 00:29:29,960
+get this<font color="#E5E5E5"> JSON object in the response</font>
+
+607
+00:29:29,960 --> 00:29:34,249
+<font color="#E5E5E5">however if I change this to</font><font color="#CCCCCC"> ten we</font><font color="#E5E5E5"> can</font>
+
+608
+00:29:34,249 --> 00:29:35,749
+this message the course with the given
+
+609
+00:29:35,749 --> 00:29:38,419
+ID was not found<font color="#E5E5E5"> and to ensure that the</font>
+
+610
+00:29:38,419 --> 00:29:41,899
+status code of this response is 404 we
+
+611
+00:29:41,899 --> 00:29:44,090
+can open<font color="#CCCCCC"> up Chrome developer tools</font><font color="#E5E5E5"> so</font>
+
+612
+00:29:44,090 --> 00:29:47,900
+right click<font color="#E5E5E5"> here go</font><font color="#CCCCCC"> to</font><font color="#E5E5E5"> inspect</font>
+
+613
+00:29:47,900 --> 00:29:50,990
+and then on the network tab<font color="#E5E5E5"> make sure</font>
+
+614
+00:29:50,990 --> 00:29:52,820
+<font color="#CCCCCC">you</font><font color="#E5E5E5"> don't have a filter here so select</font>
+
+615
+00:29:52,820 --> 00:29:55,070
+all and<font color="#CCCCCC"> then refresh the page by</font>
+
+616
+00:29:55,070 --> 00:29:57,530
+pressing<font color="#CCCCCC"> ctrl</font><font color="#E5E5E5"> R on Windows or command R</font>
+
+617
+00:29:57,530 --> 00:30:01,220
+on Mac so here's a request<font color="#E5E5E5"> that we sent</font>
+
+618
+00:30:01,220 --> 00:30:02,960
+<font color="#CCCCCC">to the server you can see the</font><font color="#E5E5E5"> status is</font>
+
+619
+00:30:02,960 --> 00:30:07,510
+404<font color="#E5E5E5"> which means not found</font>
+
+620
+00:30:10,880 --> 00:30:13,790
+so far we have created two routes that
+
+621
+00:30:13,790 --> 00:30:17,000
+respond to HTTP<font color="#E5E5E5"> GET requests and we use</font>
+
+622
+00:30:17,000 --> 00:30:19,250
+this route to get all the courses<font color="#E5E5E5"> as</font>
+
+623
+00:30:19,250 --> 00:30:21,770
+<font color="#CCCCCC">well as a single course in this lecture</font>
+
+624
+00:30:21,770 --> 00:30:23,990
+<font color="#E5E5E5">I'm</font><font color="#CCCCCC"> going to teach you how to respond to</font>
+
+625
+00:30:23,990 --> 00:30:27,740
+<font color="#E5E5E5">HTTP</font><font color="#CCCCCC"> POST requests so</font><font color="#E5E5E5"> we use an HTTP</font>
+
+626
+00:30:27,740 --> 00:30:31,450
+POST request<font color="#CCCCCC"> to create a new course so</font>
+
+627
+00:30:31,450 --> 00:30:35,540
+app that post instead of the get<font color="#CCCCCC"> method</font>
+
+628
+00:30:35,540 --> 00:30:37,940
+we use the<font color="#CCCCCC"> post method now similar to</font>
+
+629
+00:30:37,940 --> 00:30:40,100
+<font color="#CCCCCC">the get method we need to specify</font><font color="#E5E5E5"> a</font><font color="#CCCCCC"> path</font>
+
+630
+00:30:40,100 --> 00:30:43,580
+so<font color="#E5E5E5"> that should be</font><font color="#CCCCCC"> a slash API slash</font>
+
+631
+00:30:43,580 --> 00:30:46,160
+courses because we're<font color="#E5E5E5"> going to post to</font>
+
+632
+00:30:46,160 --> 00:30:49,070
+<font color="#CCCCCC">the collection</font><font color="#E5E5E5"> of courses that's why we</font>
+
+633
+00:30:49,070 --> 00:30:53,090
+use the plural name here then we add<font color="#E5E5E5"> our</font>
+
+634
+00:30:53,090 --> 00:30:56,020
+route handler so request and response
+
+635
+00:30:56,020 --> 00:31:00,140
+<font color="#E5E5E5">goes to code block</font><font color="#CCCCCC"> now I'm going to add</font>
+
+636
+00:31:00,140 --> 00:31:02,000
+some line break here<font color="#CCCCCC"> so</font><font color="#E5E5E5"> I can easily see</font>
+
+637
+00:31:02,000 --> 00:31:05,810
+<font color="#CCCCCC">this</font><font color="#E5E5E5"> video all right so in this</font><font color="#CCCCCC"> route</font>
+
+638
+00:31:05,810 --> 00:31:08,060
+handler we need to read<font color="#E5E5E5"> the course</font>
+
+639
+00:31:08,060 --> 00:31:10,160
+object<font color="#E5E5E5"> that should be in the body of the</font>
+
+640
+00:31:10,160 --> 00:31:13,010
+request<font color="#E5E5E5"> use these properties</font><font color="#CCCCCC"> to create a</font>
+
+641
+00:31:13,010 --> 00:31:15,410
+new course object and then add that
+
+642
+00:31:15,410 --> 00:31:18,290
+course object to our courses<font color="#E5E5E5"> array so</font>
+
+643
+00:31:18,290 --> 00:31:19,780
+let's create<font color="#E5E5E5"> a new course object</font>
+
+644
+00:31:19,780 --> 00:31:23,000
+constant course again I'm<font color="#E5E5E5"> using a</font>
+
+645
+00:31:23,000 --> 00:31:24,860
+constant<font color="#E5E5E5"> here because we're not</font><font color="#CCCCCC"> going</font><font color="#E5E5E5"> to</font>
+
+646
+00:31:24,860 --> 00:31:28,340
+reset this course object later so let's
+
+647
+00:31:28,340 --> 00:31:31,970
+set this<font color="#E5E5E5"> to a new object now here</font>
+
+648
+00:31:31,970 --> 00:31:33,260
+<font color="#CCCCCC">because we are</font><font color="#E5E5E5"> not</font><font color="#CCCCCC"> working</font><font color="#E5E5E5"> with a</font>
+
+649
+00:31:33,260 --> 00:31:35,870
+database<font color="#E5E5E5"> we need to</font><font color="#CCCCCC"> manually assign</font><font color="#E5E5E5"> an</font>
+
+650
+00:31:35,870 --> 00:31:39,680
+ID so ID so<font color="#E5E5E5"> we get the number</font><font color="#CCCCCC"> of</font>
+
+651
+00:31:39,680 --> 00:31:42,650
+<font color="#CCCCCC">elements in</font><font color="#E5E5E5"> our courses array so courses</font>
+
+652
+00:31:42,650 --> 00:31:45,800
+dot length<font color="#E5E5E5"> and simply add one to it in</font>
+
+653
+00:31:45,800 --> 00:31:48,290
+the future<font color="#E5E5E5"> when we work with the</font>
+
+654
+00:31:48,290 --> 00:31:50,150
+<font color="#CCCCCC">database the ID will be assigned by the</font>
+
+655
+00:31:50,150 --> 00:31:54,920
+<font color="#E5E5E5">database next is the name property now</font>
+
+656
+00:31:54,920 --> 00:31:56,450
+we need to read this from<font color="#CCCCCC"> the body</font><font color="#E5E5E5"> of</font>
+
+657
+00:31:56,450 --> 00:31:57,260
+the request
+
+658
+00:31:57,260 --> 00:32:02,720
+so request that body<font color="#E5E5E5"> that</font><font color="#CCCCCC"> name so here</font>
+
+659
+00:32:02,720 --> 00:32:05,090
+<font color="#E5E5E5">I'm assuming</font><font color="#CCCCCC"> that</font><font color="#E5E5E5"> in the request body we</font>
+
+660
+00:32:05,090 --> 00:32:06,920
+have an<font color="#CCCCCC"> object</font><font color="#E5E5E5"> and that object has a</font>
+
+661
+00:32:06,920 --> 00:32:10,250
+name<font color="#E5E5E5"> property now in order for</font><font color="#CCCCCC"> this line</font>
+
+662
+00:32:10,250 --> 00:32:13,220
+to work we<font color="#E5E5E5"> need to enable parsing of</font>
+
+663
+00:32:13,220 --> 00:32:15,830
+JSON objects<font color="#E5E5E5"> in the body of the</font><font color="#CCCCCC"> request</font>
+
+664
+00:32:15,830 --> 00:32:17,960
+<font color="#E5E5E5">because by</font><font color="#CCCCCC"> default this feature is not</font>
+
+665
+00:32:17,960 --> 00:32:21,890
+enabled in<font color="#CCCCCC"> express so on the top after</font>
+
+666
+00:32:21,890 --> 00:32:24,450
+<font color="#CCCCCC">we get the app object</font>
+
+667
+00:32:24,450 --> 00:32:28,980
+we need to call app that use and here we
+
+668
+00:32:28,980 --> 00:32:34,410
+call<font color="#E5E5E5"> Express dot JSON now this may</font><font color="#CCCCCC"> look</font>
+
+669
+00:32:34,410 --> 00:32:36,510
+a little<font color="#E5E5E5"> bit</font><font color="#CCCCCC"> strange or unfamiliar to</font>
+
+670
+00:32:36,510 --> 00:32:38,160
+you<font color="#E5E5E5"> but</font><font color="#CCCCCC"> don't</font><font color="#E5E5E5"> worry later in this</font>
+
+671
+00:32:38,160 --> 00:32:39,720
+section<font color="#E5E5E5"> we're going to explore this in</font>
+
+672
+00:32:39,720 --> 00:32:42,120
+detail<font color="#E5E5E5"> basically what we're doing</font><font color="#CCCCCC"> here</font>
+
+673
+00:32:42,120 --> 00:32:44,370
+is adding<font color="#CCCCCC"> a piece of middleware</font>
+
+674
+00:32:44,370 --> 00:32:47,550
+so when we call<font color="#E5E5E5"> Express the JSON meta</font>
+
+675
+00:32:47,550 --> 00:32:49,890
+<font color="#E5E5E5">this method returns</font><font color="#CCCCCC"> a piece of</font>
+
+676
+00:32:49,890 --> 00:32:52,620
+middleware<font color="#E5E5E5"> and then we call app dot use</font>
+
+677
+00:32:52,620 --> 00:32:55,200
+to use that middleware in the request
+
+678
+00:32:55,200 --> 00:32:57,630
+processing pipeline<font color="#E5E5E5"> again</font><font color="#CCCCCC"> we're going</font><font color="#E5E5E5"> to</font>
+
+679
+00:32:57,630 --> 00:32:59,340
+<font color="#E5E5E5">explore</font><font color="#CCCCCC"> that in detail later in</font><font color="#E5E5E5"> the</font>
+
+680
+00:32:59,340 --> 00:33:04,310
+section so back to our<font color="#E5E5E5"> new route handler</font>
+
+681
+00:33:04,310 --> 00:33:08,040
+you have a course object next<font color="#CCCCCC"> we push it</font>
+
+682
+00:33:08,040 --> 00:33:13,140
+in our array so courses dot push course
+
+683
+00:33:13,140 --> 00:33:16,890
+and finally by convention when we post
+
+684
+00:33:16,890 --> 00:33:18,900
+an object to the server<font color="#CCCCCC"> when the server</font>
+
+685
+00:33:18,900 --> 00:33:20,880
+creates a new<font color="#CCCCCC"> object or a new resource</font>
+
+686
+00:33:20,880 --> 00:33:23,430
+<font color="#E5E5E5">you should return that</font><font color="#CCCCCC"> object</font><font color="#E5E5E5"> in the</font>
+
+687
+00:33:23,430 --> 00:33:27,000
+body of<font color="#E5E5E5"> the response so response that's</font>
+
+688
+00:33:27,000 --> 00:33:29,800
+and<font color="#E5E5E5"> course</font>
+
+689
+00:33:29,800 --> 00:33:32,140
+the reason<font color="#E5E5E5"> for this is because we</font><font color="#CCCCCC"> are</font>
+
+690
+00:33:32,140 --> 00:33:35,140
+assigning this ID on the server so<font color="#E5E5E5"> we</font>
+
+691
+00:33:35,140 --> 00:33:36,760
+need to return<font color="#E5E5E5"> this course object to the</font>
+
+692
+00:33:36,760 --> 00:33:39,190
+client<font color="#E5E5E5"> because chances are the client</font>
+
+693
+00:33:39,190 --> 00:33:41,020
+needs<font color="#CCCCCC"> to know</font><font color="#E5E5E5"> the idea of</font><font color="#CCCCCC"> this new</font>
+
+694
+00:33:41,020 --> 00:33:43,990
+<font color="#CCCCCC">object</font><font color="#E5E5E5"> or this new resource so this is</font>
+
+695
+00:33:43,990 --> 00:33:47,230
+how we handle<font color="#E5E5E5"> HTTP</font><font color="#CCCCCC"> POST requests in the</font>
+
+696
+00:33:47,230 --> 00:33:48,940
+next lecture<font color="#E5E5E5"> I'm going</font><font color="#CCCCCC"> to</font><font color="#E5E5E5"> show you how</font>
+
+697
+00:33:48,940 --> 00:33:51,930
+<font color="#E5E5E5">to test this</font><font color="#CCCCCC"> endpoint</font>
+
+698
+00:33:55,780 --> 00:33:58,480
+all right to call HTTP services we use<font color="#E5E5E5"> a</font>
+
+699
+00:33:58,480 --> 00:34:01,330
+<font color="#E5E5E5">Chrome</font><font color="#CCCCCC"> extension called</font><font color="#E5E5E5"> postman so if</font>
+
+700
+00:34:01,330 --> 00:34:02,920
+you have an installed postman before
+
+701
+00:34:02,920 --> 00:34:08,080
+search<font color="#E5E5E5"> for</font><font color="#CCCCCC"> Chrome postman here is</font>
+
+702
+00:34:08,080 --> 00:34:16,330
+postman<font color="#E5E5E5"> simply add</font><font color="#CCCCCC"> it to Chrome ok done</font>
+
+703
+00:34:16,330 --> 00:34:19,060
+now<font color="#CCCCCC"> you can open this from the apps</font><font color="#E5E5E5"> menu</font>
+
+704
+00:34:19,060 --> 00:34:22,600
+here<font color="#CCCCCC"> postman I</font><font color="#E5E5E5"> hear it's asking you</font><font color="#CCCCCC"> to</font>
+
+705
+00:34:22,600 --> 00:34:23,949
+sign<font color="#E5E5E5"> up</font><font color="#CCCCCC"> for an</font><font color="#E5E5E5"> account but you don't</font>
+
+706
+00:34:23,949 --> 00:34:26,379
+have to do this<font color="#E5E5E5"> there's a link</font><font color="#CCCCCC"> here</font><font color="#E5E5E5"> take</font>
+
+707
+00:34:26,379 --> 00:34:29,260
+me straight to<font color="#E5E5E5"> the app</font><font color="#CCCCCC"> alright now on</font>
+
+708
+00:34:29,260 --> 00:34:31,750
+this page we can create a new HTTP
+
+709
+00:34:31,750 --> 00:34:32,440
+request
+
+710
+00:34:32,440 --> 00:34:35,949
+so from this<font color="#E5E5E5"> drop-down list we set the</font>
+
+711
+00:34:35,949 --> 00:34:39,639
+type to a post request<font color="#CCCCCC"> you put the URL</font>
+
+712
+00:34:39,639 --> 00:34:43,418
+here in this case that's HTTP<font color="#E5E5E5"> localhost</font>
+
+713
+00:34:43,418 --> 00:34:46,659
+<font color="#CCCCCC">on my machine I'm using port 3000 to</font>
+
+714
+00:34:46,659 --> 00:34:50,850
+host this application API slash courses
+
+715
+00:34:50,850 --> 00:34:54,190
+now we need to set the body of this
+
+716
+00:34:54,190 --> 00:34:57,510
+request from this list select raw and
+
+717
+00:34:57,510 --> 00:34:59,850
+then
+
+718
+00:34:59,850 --> 00:35:03,720
+<font color="#E5E5E5">JSON so with this we can put a JSON</font>
+
+719
+00:35:03,720 --> 00:35:06,500
+object<font color="#CCCCCC"> in the body of the request</font><font color="#E5E5E5"> so</font>
+
+720
+00:35:06,500 --> 00:35:09,300
+let's add an object<font color="#E5E5E5"> here and give it a</font>
+
+721
+00:35:09,300 --> 00:35:13,890
+name<font color="#CCCCCC"> property so name we set this</font><font color="#E5E5E5"> to new</font>
+
+722
+00:35:13,890 --> 00:35:18,810
+course<font color="#E5E5E5"> and then finally send okay if you</font>
+
+723
+00:35:18,810 --> 00:35:20,730
+scroll<font color="#E5E5E5"> down you can see</font><font color="#CCCCCC"> the status</font><font color="#E5E5E5"> of</font>
+
+724
+00:35:20,730 --> 00:35:22,830
+<font color="#E5E5E5">the request is 200 which means the</font>
+
+725
+00:35:22,830 --> 00:35:24,800
+request was handled successfully<font color="#CCCCCC"> and</font>
+
+726
+00:35:24,800 --> 00:35:28,020
+here's the body of the response so<font color="#E5E5E5"> IDs</font>
+
+727
+00:35:28,020 --> 00:35:30,540
+<font color="#E5E5E5">for because now we have four courses in</font>
+
+728
+00:35:30,540 --> 00:35:33,120
+our array and this is the same name<font color="#E5E5E5"> that</font>
+
+729
+00:35:33,120 --> 00:35:35,640
+we send to<font color="#E5E5E5"> the server so this is how we</font>
+
+730
+00:35:35,640 --> 00:35:39,990
+test<font color="#E5E5E5"> HTTP services is in postman now in</font>
+
+731
+00:35:39,990 --> 00:35:42,150
+<font color="#E5E5E5">this implementation we have assumed that</font>
+
+732
+00:35:42,150 --> 00:35:44,610
+there is an object<font color="#E5E5E5"> with the name</font>
+
+733
+00:35:44,610 --> 00:35:48,240
+property<font color="#CCCCCC"> in the body</font><font color="#E5E5E5"> of the request</font><font color="#CCCCCC"> what</font>
+
+734
+00:35:48,240 --> 00:35:49,890
+if the client forgets to send<font color="#CCCCCC"> this</font>
+
+735
+00:35:49,890 --> 00:35:52,260
+property or sends an invalid name
+
+736
+00:35:52,260 --> 00:35:54,630
+<font color="#E5E5E5">perhaps a name that is too short that's</font>
+
+737
+00:35:54,630 --> 00:35:56,940
+where<font color="#E5E5E5"> input validation comes into the</font>
+
+738
+00:35:56,940 --> 00:35:58,650
+picture<font color="#CCCCCC"> and that's the topic</font><font color="#E5E5E5"> for</font><font color="#CCCCCC"> the</font>
+
+739
+00:35:58,650 --> 00:36:01,040
+next<font color="#E5E5E5"> lecture</font>
+
+740
+00:36:04,680 --> 00:36:06,299
+in this lecture<font color="#CCCCCC"> I'm going</font><font color="#E5E5E5"> to show you</font>
+
+741
+00:36:06,299 --> 00:36:09,270
+how<font color="#E5E5E5"> to do input validation so as a</font>
+
+742
+00:36:09,270 --> 00:36:11,279
+security best practice<font color="#CCCCCC"> you should never</font>
+
+743
+00:36:11,279 --> 00:36:14,789
+ever<font color="#E5E5E5"> ever trust what the client sends</font>
+
+744
+00:36:14,789 --> 00:36:15,150
+<font color="#E5E5E5">you</font>
+
+745
+00:36:15,150 --> 00:36:18,329
+you should always<font color="#E5E5E5"> validate the input so</font>
+
+746
+00:36:18,329 --> 00:36:20,309
+in this particular<font color="#CCCCCC"> example</font><font color="#E5E5E5"> because</font><font color="#CCCCCC"> we're</font>
+
+747
+00:36:20,309 --> 00:36:22,770
+dealing<font color="#CCCCCC"> with a</font><font color="#E5E5E5"> simple object with only</font>
+
+748
+00:36:22,770 --> 00:36:24,990
+one property<font color="#CCCCCC"> that is</font><font color="#E5E5E5"> named we can write</font>
+
+749
+00:36:24,990 --> 00:36:28,309
+some validation logic<font color="#E5E5E5"> like this</font>
+
+750
+00:36:28,309 --> 00:36:35,450
+so if<font color="#CCCCCC"> requests the body that name</font>
+
+751
+00:36:35,450 --> 00:36:41,970
+doesn't<font color="#E5E5E5"> exist or</font><font color="#CCCCCC"> requests</font><font color="#E5E5E5"> that body the</font>
+
+752
+00:36:41,970 --> 00:36:47,369
+name<font color="#E5E5E5"> that length is less than</font><font color="#CCCCCC"> 3 then</font>
+
+753
+00:36:47,369 --> 00:36:48,960
+<font color="#E5E5E5">we're gonna return an error to</font><font color="#CCCCCC"> the</font>
+
+754
+00:36:48,960 --> 00:36:51,510
+client<font color="#E5E5E5"> the restful convention is</font><font color="#CCCCCC"> to</font>
+
+755
+00:36:51,510 --> 00:36:54,240
+return a<font color="#E5E5E5"> response with the HTTP status</font>
+
+756
+00:36:54,240 --> 00:37:00,569
+code<font color="#CCCCCC"> or 400 that means bad requests so</font>
+
+757
+00:37:00,569 --> 00:37:06,349
+to do this recall response that<font color="#E5E5E5"> status</font>
+
+758
+00:37:06,349 --> 00:37:10,799
+400 and then<font color="#E5E5E5"> we can send an error</font>
+
+759
+00:37:10,799 --> 00:37:12,779
+message<font color="#CCCCCC"> in this case we can write</font><font color="#E5E5E5"> a</font>
+
+760
+00:37:12,779 --> 00:37:15,599
+generic<font color="#E5E5E5"> error message like name is</font>
+
+761
+00:37:15,599 --> 00:37:19,470
+required and<font color="#E5E5E5"> should</font><font color="#CCCCCC"> be minimum</font><font color="#E5E5E5"> three</font>
+
+762
+00:37:19,470 --> 00:37:22,500
+characters in<font color="#CCCCCC"> your implementation you</font>
+
+763
+00:37:22,500 --> 00:37:24,630
+may want to<font color="#E5E5E5"> differentiate the errors for</font>
+
+764
+00:37:24,630 --> 00:37:26,460
+<font color="#E5E5E5">example</font><font color="#CCCCCC"> if the client didn't send the</font>
+
+765
+00:37:26,460 --> 00:37:28,440
+name property<font color="#E5E5E5"> perhaps you would just</font>
+
+766
+00:37:28,440 --> 00:37:32,400
+respond with name is required<font color="#E5E5E5"> or if they</font>
+
+767
+00:37:32,400 --> 00:37:34,410
+did send<font color="#E5E5E5"> the name but the name</font><font color="#CCCCCC"> was not</font>
+
+768
+00:37:34,410 --> 00:37:36,240
+long enough you could send a<font color="#E5E5E5"> different</font>
+
+769
+00:37:36,240 --> 00:37:39,270
+error message and then finally we
+
+770
+00:37:39,270 --> 00:37:40,650
+<font color="#CCCCCC">returned here because we</font><font color="#E5E5E5"> don't want the</font>
+
+771
+00:37:40,650 --> 00:37:43,230
+<font color="#CCCCCC">rest of this function to be executed so</font>
+
+772
+00:37:43,230 --> 00:37:46,500
+this is the basic idea<font color="#E5E5E5"> however in a real</font>
+
+773
+00:37:46,500 --> 00:37:48,270
+world<font color="#E5E5E5"> application it's more likely that</font>
+
+774
+00:37:48,270 --> 00:37:50,910
+<font color="#CCCCCC">you'll be working with a complex object</font>
+
+775
+00:37:50,910 --> 00:37:52,770
+something<font color="#E5E5E5"> more complex than this course</font>
+
+776
+00:37:52,770 --> 00:37:55,020
+object here you don't<font color="#E5E5E5"> want to write a</font>
+
+777
+00:37:55,020 --> 00:37:57,569
+complex validation logic like this at
+
+778
+00:37:57,569 --> 00:38:00,029
+the<font color="#E5E5E5"> beginning of your route handler so</font>
+
+779
+00:38:00,029 --> 00:38:01,890
+let me introduce<font color="#CCCCCC"> you to</font><font color="#E5E5E5"> a</font><font color="#CCCCCC"> new</font><font color="#E5E5E5"> package</font>
+
+780
+00:38:01,890 --> 00:38:03,900
+<font color="#E5E5E5">that makes it really easy</font><font color="#CCCCCC"> for you to</font>
+
+781
+00:38:03,900 --> 00:38:07,440
+validate<font color="#E5E5E5"> the input so on Google if you</font>
+
+782
+00:38:07,440 --> 00:38:12,690
+search for<font color="#E5E5E5"> NPM joy with I look</font><font color="#CCCCCC"> here is</font>
+
+783
+00:38:12,690 --> 00:38:16,529
+the first link<font color="#CCCCCC"> so here you can see joy</font>
+
+784
+00:38:16,529 --> 00:38:18,619
+has been downloaded<font color="#CCCCCC"> over to</font>
+
+785
+00:38:18,619 --> 00:38:22,140
+150,000 times<font color="#CCCCCC"> or the past day and</font><font color="#E5E5E5"> over</font>
+
+786
+00:38:22,140 --> 00:38:24,029
+<font color="#E5E5E5">three million times over the past month</font>
+
+787
+00:38:24,029 --> 00:38:27,269
+<font color="#E5E5E5">it's</font><font color="#CCCCCC"> a very popular package</font><font color="#E5E5E5"> also here on</font>
+
+788
+00:38:27,269 --> 00:38:29,190
+this page you<font color="#CCCCCC"> can see some sample code</font>
+
+789
+00:38:29,190 --> 00:38:32,539
+and link to<font color="#CCCCCC"> your</font><font color="#E5E5E5"> official documentation</font>
+
+790
+00:38:32,539 --> 00:38:35,249
+now let me show<font color="#E5E5E5"> you how to replace this</font>
+
+791
+00:38:35,249 --> 00:38:37,369
+validation<font color="#E5E5E5"> logic</font><font color="#CCCCCC"> with joy</font>
+
+792
+00:38:37,369 --> 00:38:41,539
+so first back<font color="#E5E5E5"> in terminal let's install</font>
+
+793
+00:38:41,539 --> 00:38:46,229
+joy so you can see it at<font color="#E5E5E5"> the time of</font>
+
+794
+00:38:46,229 --> 00:38:49,200
+<font color="#CCCCCC">recording this video</font><font color="#E5E5E5"> the latest version</font>
+
+795
+00:38:49,200 --> 00:38:52,769
+is version<font color="#E5E5E5"> 13 point 1.0 if you want to</font>
+
+796
+00:38:52,769 --> 00:38:54,390
+make<font color="#CCCCCC"> sure that you have the exact same</font>
+
+797
+00:38:54,390 --> 00:38:56,009
+<font color="#E5E5E5">experience as what I'm going to show</font><font color="#CCCCCC"> you</font>
+
+798
+00:38:56,009 --> 00:38:58,529
+in this<font color="#E5E5E5"> video then install this exact</font>
+
+799
+00:38:58,529 --> 00:39:03,119
+version so<font color="#E5E5E5"> npm install joy at thirteen</font>
+
+800
+00:39:03,119 --> 00:39:06,329
+point one<font color="#E5E5E5"> point zero okay now back</font><font color="#CCCCCC"> in</font>
+
+801
+00:39:06,329 --> 00:39:10,529
+the code on the<font color="#CCCCCC"> top we need to load</font><font color="#E5E5E5"> this</font>
+
+802
+00:39:10,529 --> 00:39:16,019
+module<font color="#E5E5E5"> so</font><font color="#CCCCCC"> require joy</font><font color="#E5E5E5"> get the result and</font>
+
+803
+00:39:16,019 --> 00:39:19,019
+<font color="#E5E5E5">store it in a constant called joy with a</font>
+
+804
+00:39:19,019 --> 00:39:21,569
+capital<font color="#E5E5E5"> J because what is returned from</font>
+
+805
+00:39:21,569 --> 00:39:24,269
+<font color="#E5E5E5">this module is a class and as I told you</font>
+
+806
+00:39:24,269 --> 00:39:26,880
+<font color="#CCCCCC">before</font><font color="#E5E5E5"> in JavaScript we use Pascal</font>
+
+807
+00:39:26,880 --> 00:39:29,400
+naming convention<font color="#E5E5E5"> to name our classes</font><font color="#CCCCCC"> so</font>
+
+808
+00:39:29,400 --> 00:39:31,650
+<font color="#CCCCCC">the first letter of</font><font color="#E5E5E5"> every word should be</font>
+
+809
+00:39:31,650 --> 00:39:35,369
+uppercase also as a best practice with
+
+810
+00:39:35,369 --> 00:39:37,559
+all your required calls<font color="#E5E5E5"> on top of the</font>
+
+811
+00:39:37,559 --> 00:39:39,779
+file<font color="#E5E5E5"> this way you can easily see what</font>
+
+812
+00:39:39,779 --> 00:39:42,119
+are the dependencies<font color="#CCCCCC"> of this module so</font>
+
+813
+00:39:42,119 --> 00:39:44,609
+this module<font color="#E5E5E5"> index module is dependent</font>
+
+814
+00:39:44,609 --> 00:39:47,130
+upon<font color="#E5E5E5"> two modules one is joy the other is</font>
+
+815
+00:39:47,130 --> 00:39:51,499
+<font color="#E5E5E5">Express okay so we have this joy class</font>
+
+816
+00:39:51,499 --> 00:39:55,739
+now packing<font color="#CCCCCC"> our route handler now with</font>
+
+817
+00:39:55,739 --> 00:39:58,079
+joy<font color="#E5E5E5"> first we need to define a schema</font>
+
+818
+00:39:58,079 --> 00:40:01,109
+schema defines the shape<font color="#CCCCCC"> of our objects</font>
+
+819
+00:40:01,109 --> 00:40:02,910
+<font color="#E5E5E5">what properties do we have in that</font>
+
+820
+00:40:02,910 --> 00:40:04,950
+<font color="#E5E5E5">object</font><font color="#CCCCCC"> what is the type of</font><font color="#E5E5E5"> each property</font>
+
+821
+00:40:04,950 --> 00:40:07,109
+<font color="#CCCCCC">do we have an email do we have a string</font>
+
+822
+00:40:07,109 --> 00:40:09,420
+<font color="#E5E5E5">what are the minimum or maximum number</font>
+
+823
+00:40:09,420 --> 00:40:11,759
+of<font color="#E5E5E5"> characters do we have a number what</font>
+
+824
+00:40:11,759 --> 00:40:13,559
+range should that number<font color="#CCCCCC"> be so this is</font>
+
+825
+00:40:13,559 --> 00:40:16,859
+the job<font color="#E5E5E5"> of a schema so here first I'm</font>
+
+826
+00:40:16,859 --> 00:40:22,759
+going<font color="#E5E5E5"> to define a schema constant schema</font>
+
+827
+00:40:22,759 --> 00:40:26,099
+<font color="#E5E5E5">we set it to an object this is the shape</font>
+
+828
+00:40:26,099 --> 00:40:28,140
+of our course object so here<font color="#CCCCCC"> we</font><font color="#E5E5E5"> want to</font>
+
+829
+00:40:28,140 --> 00:40:31,289
+<font color="#E5E5E5">have a name property and we said this to</font>
+
+830
+00:40:31,289 --> 00:40:32,520
+joy
+
+831
+00:40:32,520 --> 00:40:35,070
+<font color="#E5E5E5">dot string so we're telling</font><font color="#CCCCCC"> joyed that</font>
+
+832
+00:40:35,070 --> 00:40:37,170
+<font color="#CCCCCC">this is a string</font><font color="#E5E5E5"> and it should have</font>
+
+833
+00:40:37,170 --> 00:40:40,650
+minimum<font color="#E5E5E5"> three characters and it should</font>
+
+834
+00:40:40,650 --> 00:40:43,410
+be<font color="#E5E5E5"> required</font><font color="#CCCCCC"> so it has a very fluent API</font>
+
+835
+00:40:43,410 --> 00:40:45,510
+again<font color="#CCCCCC"> you can</font><font color="#E5E5E5"> look at the documentation</font>
+
+836
+00:40:45,510 --> 00:40:47,400
+<font color="#E5E5E5">to see all the methods that are</font>
+
+837
+00:40:47,400 --> 00:40:50,150
+<font color="#CCCCCC">available</font><font color="#E5E5E5"> to you so here's our a schema</font>
+
+838
+00:40:50,150 --> 00:40:55,410
+now we call joy that validate<font color="#E5E5E5"> and we</font>
+
+839
+00:40:55,410 --> 00:40:59,130
+give<font color="#CCCCCC"> it request</font><font color="#E5E5E5"> that body as well as our</font>
+
+840
+00:40:59,130 --> 00:41:02,400
+schema<font color="#E5E5E5"> now this validate method returns</font>
+
+841
+00:41:02,400 --> 00:41:05,220
+<font color="#CCCCCC">an object</font><font color="#E5E5E5"> let's store</font><font color="#CCCCCC"> that in a constant</font>
+
+842
+00:41:05,220 --> 00:41:10,080
+called result for this demo<font color="#CCCCCC"> I'm gonna</font>
+
+843
+00:41:10,080 --> 00:41:14,220
+log this result<font color="#E5E5E5"> on the console so before</font>
+
+844
+00:41:14,220 --> 00:41:17,400
+we go<font color="#CCCCCC"> any further</font><font color="#E5E5E5"> let's save this go</font>
+
+845
+00:41:17,400 --> 00:41:20,190
+back<font color="#E5E5E5"> to the postman let's create another</font>
+
+846
+00:41:20,190 --> 00:41:24,660
+course now back in the terminal<font color="#CCCCCC"> so this</font>
+
+847
+00:41:24,660 --> 00:41:27,120
+is a<font color="#E5E5E5"> result object it has two properties</font>
+
+848
+00:41:27,120 --> 00:41:31,350
+<font color="#E5E5E5">error and value only one of these can</font>
+
+849
+00:41:31,350 --> 00:41:33,660
+have a value<font color="#E5E5E5"> so in this case because we</font>
+
+850
+00:41:33,660 --> 00:41:36,420
+sent a valid course object we<font color="#CCCCCC"> have that</font>
+
+851
+00:41:36,420 --> 00:41:39,780
+object here as the<font color="#CCCCCC"> value</font><font color="#E5E5E5"> of the value</font>
+
+852
+00:41:39,780 --> 00:41:43,500
+<font color="#E5E5E5">property and you can</font><font color="#CCCCCC"> see error is not if</font>
+
+853
+00:41:43,500 --> 00:41:46,080
+we send an invalid object<font color="#E5E5E5"> value will be</font>
+
+854
+00:41:46,080 --> 00:41:48,750
+null and error will be<font color="#E5E5E5"> set let me show</font>
+
+855
+00:41:48,750 --> 00:41:53,190
+you so I can<font color="#CCCCCC"> postman let's remove the</font>
+
+856
+00:41:53,190 --> 00:41:56,580
+name<font color="#E5E5E5"> property send now back in the</font>
+
+857
+00:41:56,580 --> 00:42:01,500
+<font color="#CCCCCC">terminal okay look so here's the result</font>
+
+858
+00:42:01,500 --> 00:42:03,870
+object<font color="#E5E5E5"> this</font><font color="#CCCCCC"> is the error property</font><font color="#E5E5E5"> it's</font>
+
+859
+00:42:03,870 --> 00:42:06,450
+set to<font color="#E5E5E5"> an object that has validation</font>
+
+860
+00:42:06,450 --> 00:42:09,480
+error child<font color="#E5E5E5"> name fails because name is</font>
+
+861
+00:42:09,480 --> 00:42:13,010
+required<font color="#E5E5E5"> so back</font><font color="#CCCCCC"> to a route handler</font>
+
+862
+00:42:13,010 --> 00:42:15,510
+instead of<font color="#CCCCCC"> this manual validation logic</font>
+
+863
+00:42:15,510 --> 00:42:18,330
+<font color="#E5E5E5">we can check the value of result that</font>
+
+864
+00:42:18,330 --> 00:42:24,090
+error property so if result that error
+
+865
+00:42:24,090 --> 00:42:26,730
+<font color="#E5E5E5">then we're gonna send a response with</font>
+
+866
+00:42:26,730 --> 00:42:30,420
+status code of<font color="#CCCCCC"> 400</font><font color="#E5E5E5"> and</font><font color="#CCCCCC"> in the body</font><font color="#E5E5E5"> of</font>
+
+867
+00:42:30,420 --> 00:42:33,710
+the response for now we can simply add
+
+868
+00:42:33,710 --> 00:42:38,850
+result<font color="#CCCCCC"> an error</font><font color="#E5E5E5"> okay</font><font color="#CCCCCC"> and we don't need</font>
+
+869
+00:42:38,850 --> 00:42:41,220
+this constant along<font color="#E5E5E5"> anymore</font>
+
+870
+00:42:41,220 --> 00:42:45,720
+save<font color="#E5E5E5"> now back in</font><font color="#CCCCCC"> postman one more time</font>
+
+871
+00:42:45,720 --> 00:42:49,050
+I'm gonna send<font color="#E5E5E5"> this empty object now</font>
+
+872
+00:42:49,050 --> 00:42:51,900
+look at the response so this is what we
+
+873
+00:42:51,900 --> 00:42:54,300
+get<font color="#E5E5E5"> an object</font><font color="#CCCCCC"> with these</font><font color="#E5E5E5"> properties is</font>
+
+874
+00:42:54,300 --> 00:42:58,290
+joy<font color="#CCCCCC"> name details which is an array of</font>
+
+875
+00:42:58,290 --> 00:43:00,150
+error messages<font color="#CCCCCC"> so here's the first</font>
+
+876
+00:43:00,150 --> 00:43:03,570
+message<font color="#E5E5E5"> name is required now this object</font>
+
+877
+00:43:03,570 --> 00:43:05,790
+<font color="#E5E5E5">is too complex to send to the client</font>
+
+878
+00:43:05,790 --> 00:43:09,500
+<font color="#E5E5E5">perhaps</font><font color="#CCCCCC"> you</font><font color="#E5E5E5"> want to simplify this so</font>
+
+879
+00:43:09,500 --> 00:43:13,730
+back in the code<font color="#E5E5E5"> one simple solution</font><font color="#CCCCCC"> is</font>
+
+880
+00:43:13,730 --> 00:43:17,160
+to<font color="#CCCCCC"> go to the</font><font color="#E5E5E5"> details array get the first</font>
+
+881
+00:43:17,160 --> 00:43:19,680
+<font color="#CCCCCC">element and then access the message</font>
+
+882
+00:43:19,680 --> 00:43:22,530
+property or instead<font color="#CCCCCC"> of</font><font color="#E5E5E5"> using the first</font>
+
+883
+00:43:22,530 --> 00:43:24,720
+element<font color="#E5E5E5"> you may want to access</font><font color="#CCCCCC"> all</font>
+
+884
+00:43:24,720 --> 00:43:27,060
+elements<font color="#E5E5E5"> in this array get their message</font>
+
+885
+00:43:27,060 --> 00:43:29,010
+property and concatenate<font color="#E5E5E5"> them that's</font>
+
+886
+00:43:29,010 --> 00:43:32,869
+entirely up to you<font color="#E5E5E5"> so save one more time</font>
+
+887
+00:43:32,869 --> 00:43:36,599
+let's<font color="#CCCCCC"> send an invalid request</font><font color="#E5E5E5"> and now we</font>
+
+888
+00:43:36,599 --> 00:43:40,020
+get name is required if we go to our
+
+889
+00:43:40,020 --> 00:43:42,810
+request<font color="#E5E5E5"> and add the name</font><font color="#CCCCCC"> property but</font>
+
+890
+00:43:42,810 --> 00:43:44,820
+set it to a string that is<font color="#E5E5E5"> only 1</font>
+
+891
+00:43:44,820 --> 00:43:48,720
+<font color="#E5E5E5">character now we get a different error</font>
+
+892
+00:43:48,720 --> 00:43:51,810
+<font color="#CCCCCC">name length must</font><font color="#E5E5E5"> be at</font><font color="#CCCCCC"> least 3</font>
+
+893
+00:43:51,810 --> 00:43:54,510
+characters long<font color="#E5E5E5"> so you can see joy makes</font>
+
+894
+00:43:54,510 --> 00:43:56,940
+it really<font color="#CCCCCC"> easy</font><font color="#E5E5E5"> to validate the input and</font>
+
+895
+00:43:56,940 --> 00:43:59,400
+return proper error messages to the
+
+896
+00:43:59,400 --> 00:44:01,760
+client
+
+897
+00:44:05,250 --> 00:44:06,840
+<font color="#E5E5E5">all right now let's see how we can</font>
+
+898
+00:44:06,840 --> 00:44:11,070
+update a course so let's add a new<font color="#E5E5E5"> route</font>
+
+899
+00:44:11,070 --> 00:44:16,980
+handler app we use the put method<font color="#E5E5E5"> for</font>
+
+900
+00:44:16,980 --> 00:44:20,610
+updating resources now the path should
+
+901
+00:44:20,610 --> 00:44:25,350
+be<font color="#E5E5E5"> slash API slash courses and here we</font>
+
+902
+00:44:25,350 --> 00:44:27,240
+<font color="#E5E5E5">need a route parameter because we're</font>
+
+903
+00:44:27,240 --> 00:44:28,860
+dealing<font color="#CCCCCC"> with your specific</font><font color="#E5E5E5"> course</font>
+
+904
+00:44:28,860 --> 00:44:32,970
+so<font color="#E5E5E5"> ID now our route handler function</font>
+
+905
+00:44:32,970 --> 00:44:36,300
+<font color="#CCCCCC">request son response goes to a code</font>
+
+906
+00:44:36,300 --> 00:44:39,360
+block<font color="#CCCCCC"> alright now here's</font><font color="#E5E5E5"> the logic we</font>
+
+907
+00:44:39,360 --> 00:44:41,490
+need to implement first<font color="#E5E5E5"> we need to</font><font color="#CCCCCC"> look</font>
+
+908
+00:44:41,490 --> 00:44:44,070
+<font color="#E5E5E5">up this course with this</font><font color="#CCCCCC"> given</font><font color="#E5E5E5"> ID so</font>
+
+909
+00:44:44,070 --> 00:44:46,500
+look up the course if the<font color="#CCCCCC"> course doesn't</font>
+
+910
+00:44:46,500 --> 00:44:49,730
+<font color="#E5E5E5">exist</font><font color="#CCCCCC"> if not existing we need to return</font>
+
+911
+00:44:49,730 --> 00:44:53,840
+404<font color="#E5E5E5"> that means resource not found</font>
+
+912
+00:44:53,840 --> 00:44:56,790
+<font color="#E5E5E5">otherwise we need to</font><font color="#CCCCCC"> validate the course</font>
+
+913
+00:44:56,790 --> 00:44:58,530
+<font color="#E5E5E5">make sure</font><font color="#CCCCCC"> it's in good shape</font>
+
+914
+00:44:58,530 --> 00:45:03,300
+<font color="#CCCCCC">if invalid</font><font color="#E5E5E5"> we need to return a 400 error</font>
+
+915
+00:45:03,300 --> 00:45:07,650
+<font color="#E5E5E5">which means that request and if you get</font>
+
+916
+00:45:07,650 --> 00:45:09,120
+here that means everything is good so
+
+917
+00:45:09,120 --> 00:45:14,640
+<font color="#CCCCCC">you update the course and return</font><font color="#E5E5E5"> the</font>
+
+918
+00:45:14,640 --> 00:45:17,400
+updated course to the client this<font color="#E5E5E5"> is</font><font color="#CCCCCC"> the</font>
+
+919
+00:45:17,400 --> 00:45:19,920
+logic we need to<font color="#CCCCCC"> implement so we already</font>
+
+920
+00:45:19,920 --> 00:45:22,140
+<font color="#E5E5E5">have some</font><font color="#CCCCCC"> code that we can</font><font color="#E5E5E5"> reuse here so</font>
+
+921
+00:45:22,140 --> 00:45:23,580
+I'm not<font color="#CCCCCC"> going</font><font color="#E5E5E5"> to type everything</font><font color="#CCCCCC"> by hand</font>
+
+922
+00:45:23,580 --> 00:45:26,100
+<font color="#CCCCCC">I'm gonna copy some code</font><font color="#E5E5E5"> from our other</font>
+
+923
+00:45:26,100 --> 00:45:28,440
+route handlers<font color="#E5E5E5"> so first we want to</font><font color="#CCCCCC"> look</font>
+
+924
+00:45:28,440 --> 00:45:30,210
+up<font color="#E5E5E5"> the course and if it doesn't exist</font>
+
+925
+00:45:30,210 --> 00:45:33,810
+<font color="#CCCCCC">you want to return a 404 error for</font><font color="#E5E5E5"> that</font>
+
+926
+00:45:33,810 --> 00:45:36,660
+I'm<font color="#E5E5E5"> gonna go to this other rat handler</font>
+
+927
+00:45:36,660 --> 00:45:39,840
+where we get a single course this is the
+
+928
+00:45:39,840 --> 00:45:42,330
+logic<font color="#E5E5E5"> we're interested in so we look up</font>
+
+929
+00:45:42,330 --> 00:45:44,430
+<font color="#CCCCCC">the course and if it</font><font color="#E5E5E5"> doesn't</font><font color="#CCCCCC"> exist we</font>
+
+930
+00:45:44,430 --> 00:45:47,340
+return a 404 error so copy<font color="#E5E5E5"> these</font><font color="#CCCCCC"> two</font>
+
+931
+00:45:47,340 --> 00:45:52,100
+lines we're done with the first<font color="#CCCCCC"> part the</font>
+
+932
+00:45:52,100 --> 00:45:55,410
+<font color="#CCCCCC">second part is all about validation for</font>
+
+933
+00:45:55,410 --> 00:45:59,720
+that I'm gonna go<font color="#E5E5E5"> to our post endpoint</font>
+
+934
+00:45:59,720 --> 00:46:02,820
+so here we need<font color="#E5E5E5"> to copy the schema</font><font color="#CCCCCC"> as</font>
+
+935
+00:46:02,820 --> 00:46:05,640
+well as this line<font color="#E5E5E5"> for validating the</font>
+
+936
+00:46:05,640 --> 00:46:08,370
+request body using joy<font color="#E5E5E5"> and there is a</font>
+
+937
+00:46:08,370 --> 00:46:10,140
+<font color="#E5E5E5">problem with this approach the problem</font>
+
+938
+00:46:10,140 --> 00:46:12,630
+is in<font color="#E5E5E5"> this case we have a</font><font color="#CCCCCC"> very simple</font>
+
+939
+00:46:12,630 --> 00:46:14,970
+schema what if you are dealing<font color="#CCCCCC"> with a</font>
+
+940
+00:46:14,970 --> 00:46:16,950
+complex<font color="#E5E5E5"> object with quite a</font><font color="#CCCCCC"> few</font>
+
+941
+00:46:16,950 --> 00:46:18,450
+properties<font color="#CCCCCC"> then</font>
+
+942
+00:46:18,450 --> 00:46:21,060
+<font color="#E5E5E5">or validation logic would be duplicated</font>
+
+943
+00:46:21,060 --> 00:46:23,820
+<font color="#E5E5E5">in two different round handlers so let's</font>
+
+944
+00:46:23,820 --> 00:46:25,470
+just copy<font color="#E5E5E5"> the code for now and then</font>
+
+945
+00:46:25,470 --> 00:46:27,540
+we'll<font color="#CCCCCC"> come back</font><font color="#E5E5E5"> and refactor it to make</font>
+
+946
+00:46:27,540 --> 00:46:34,010
+it better<font color="#CCCCCC"> so copy these few lines and</font>
+
+947
+00:46:34,010 --> 00:46:36,500
+paste it here
+
+948
+00:46:36,500 --> 00:46:39,960
+so<font color="#E5E5E5"> we're validating and if it's invalid</font>
+
+949
+00:46:39,960 --> 00:46:42,420
+we need to return a<font color="#E5E5E5"> 400 error so I</font>
+
+950
+00:46:42,420 --> 00:46:45,810
+forgot<font color="#CCCCCC"> to copy that line here</font><font color="#E5E5E5"> if you</font>
+
+951
+00:46:45,810 --> 00:46:47,339
+have an error in the result<font color="#E5E5E5"> we're gonna</font>
+
+952
+00:46:47,339 --> 00:46:49,980
+<font color="#E5E5E5">return</font><font color="#CCCCCC"> it's</font><font color="#E5E5E5"> 400 error</font><font color="#CCCCCC"> okay</font>
+
+953
+00:46:49,980 --> 00:46:55,800
+so let's copy<font color="#E5E5E5"> that as well so this is</font>
+
+954
+00:46:55,800 --> 00:46:58,589
+<font color="#E5E5E5">our second part we have this schema we</font>
+
+955
+00:46:58,589 --> 00:47:00,810
+validate<font color="#E5E5E5"> and if you have an error</font><font color="#CCCCCC"> we</font>
+
+956
+00:47:00,810 --> 00:47:03,960
+return<font color="#E5E5E5"> a 400 error we're done with the</font>
+
+957
+00:47:03,960 --> 00:47:08,790
+second<font color="#E5E5E5"> part now the third part so at</font>
+
+958
+00:47:08,790 --> 00:47:11,430
+this point<font color="#E5E5E5"> we have a course object we</font>
+
+959
+00:47:11,430 --> 00:47:15,630
+can<font color="#CCCCCC"> update its properties so of course</font>
+
+960
+00:47:15,630 --> 00:47:18,839
+<font color="#E5E5E5">that name we said that to request the</font>
+
+961
+00:47:18,839 --> 00:47:21,750
+body the name and of course if<font color="#E5E5E5"> we have</font>
+
+962
+00:47:21,750 --> 00:47:23,760
+other<font color="#E5E5E5"> properties we'll set them here as</font>
+
+963
+00:47:23,760 --> 00:47:26,520
+well so we're done<font color="#E5E5E5"> with opting in the</font>
+
+964
+00:47:26,520 --> 00:47:28,920
+course and<font color="#E5E5E5"> finally we need</font><font color="#CCCCCC"> to return</font><font color="#E5E5E5"> the</font>
+
+965
+00:47:28,920 --> 00:47:32,060
+updated course to the client so response
+
+966
+00:47:32,060 --> 00:47:36,630
+<font color="#CCCCCC">that's and course this is how we</font><font color="#E5E5E5"> handle</font>
+
+967
+00:47:36,630 --> 00:47:41,730
+an HTTP put request<font color="#E5E5E5"> now I told you that</font>
+
+968
+00:47:41,730 --> 00:47:43,579
+we have duplicated<font color="#CCCCCC"> this validation</font><font color="#E5E5E5"> logic</font>
+
+969
+00:47:43,579 --> 00:47:46,589
+<font color="#E5E5E5">so I'm going</font><font color="#CCCCCC"> to extract</font><font color="#E5E5E5"> these few</font><font color="#CCCCCC"> lines</font>
+
+970
+00:47:46,589 --> 00:47:49,440
+into a separate function<font color="#E5E5E5"> that we can</font>
+
+971
+00:47:49,440 --> 00:47:52,950
+<font color="#E5E5E5">reuse both in this route handler for</font>
+
+972
+00:47:52,950 --> 00:47:55,920
+<font color="#E5E5E5">handling our HTTP put requests as well</font>
+
+973
+00:47:55,920 --> 00:47:57,390
+<font color="#E5E5E5">as the other one we wrote in the</font><font color="#CCCCCC"> last</font>
+
+974
+00:47:57,390 --> 00:48:00,950
+lecture<font color="#CCCCCC"> for creating a course</font>
+
+975
+00:48:00,950 --> 00:48:04,700
+so let's<font color="#CCCCCC"> define a function here</font><font color="#E5E5E5"> and call</font>
+
+976
+00:48:04,700 --> 00:48:08,660
+it<font color="#E5E5E5"> validate course</font><font color="#CCCCCC"> we give it a course</font>
+
+977
+00:48:08,660 --> 00:48:13,160
+object now in this function<font color="#CCCCCC"> we should</font>
+
+978
+00:48:13,160 --> 00:48:17,360
+<font color="#CCCCCC">have the schema</font><font color="#E5E5E5"> as well as this line for</font>
+
+979
+00:48:17,360 --> 00:48:20,480
+validating the course so cut these few
+
+980
+00:48:20,480 --> 00:48:24,440
+<font color="#E5E5E5">lines place it here now instead of</font>
+
+981
+00:48:24,440 --> 00:48:27,680
+validating<font color="#E5E5E5"> requested body you're</font><font color="#CCCCCC"> gonna</font>
+
+982
+00:48:27,680 --> 00:48:29,810
+<font color="#E5E5E5">validate the</font><font color="#CCCCCC"> argument that</font><font color="#E5E5E5"> is passed to</font>
+
+983
+00:48:29,810 --> 00:48:32,360
+this method so that<font color="#CCCCCC"> would be the course</font>
+
+984
+00:48:32,360 --> 00:48:36,260
+object now finally we<font color="#CCCCCC"> can simply return</font>
+
+985
+00:48:36,260 --> 00:48:41,090
+this result to the caller<font color="#E5E5E5"> there is no</font>
+
+986
+00:48:41,090 --> 00:48:44,180
+need to<font color="#E5E5E5"> define a constant so with this</font>
+
+987
+00:48:44,180 --> 00:48:46,250
+new implementation<font color="#E5E5E5"> we have all the</font>
+
+988
+00:48:46,250 --> 00:48:49,400
+validation logic<font color="#E5E5E5"> in one place now we can</font>
+
+989
+00:48:49,400 --> 00:48:54,400
+reuse this so here is our put<font color="#E5E5E5"> method</font>
+
+990
+00:48:54,770 --> 00:48:57,310
+<font color="#E5E5E5">we</font><font color="#CCCCCC"> define a constant call</font><font color="#E5E5E5"> result and</font>
+
+991
+00:48:57,310 --> 00:49:01,580
+study to validate course and as an
+
+992
+00:49:01,580 --> 00:49:06,320
+argument<font color="#E5E5E5"> we pass request dot body now we</font>
+
+993
+00:49:06,320 --> 00:49:07,730
+can make<font color="#E5E5E5"> this code a little bit cleaner</font>
+
+994
+00:49:07,730 --> 00:49:10,220
+<font color="#E5E5E5">and shorter by using object</font>
+
+995
+00:49:10,220 --> 00:49:12,650
+destructuring feature<font color="#E5E5E5"> and modern</font>
+
+996
+00:49:12,650 --> 00:49:14,930
+JavaScript<font color="#CCCCCC"> so look here we get this</font>
+
+997
+00:49:14,930 --> 00:49:17,869
+<font color="#E5E5E5">result object and we're accessing result</font>
+
+998
+00:49:17,869 --> 00:49:20,000
+<font color="#E5E5E5">that error property in two different</font>
+
+999
+00:49:20,000 --> 00:49:22,790
+places<font color="#CCCCCC"> since</font><font color="#E5E5E5"> all</font><font color="#CCCCCC"> we are</font><font color="#E5E5E5"> interested in is</font>
+
+1000
+00:49:22,790 --> 00:49:25,550
+this error property<font color="#E5E5E5"> we can get this</font>
+
+1001
+00:49:25,550 --> 00:49:28,190
+using object destructuring<font color="#CCCCCC"> so let me</font>
+
+1002
+00:49:28,190 --> 00:49:31,130
+duplicate this line and show you how
+
+1003
+00:49:31,130 --> 00:49:34,430
+object restructuring works with object
+
+1004
+00:49:34,430 --> 00:49:36,950
+is<font color="#E5E5E5"> structuring when declaring</font><font color="#CCCCCC"> a variable</font>
+
+1005
+00:49:36,950 --> 00:49:40,990
+or<font color="#E5E5E5"> a</font><font color="#CCCCCC"> constant we add curly braces</font><font color="#E5E5E5"> and</font>
+
+1006
+00:49:40,990 --> 00:49:44,600
+then here we<font color="#CCCCCC"> add the property of the</font>
+
+1007
+00:49:44,600 --> 00:49:47,090
+target object<font color="#E5E5E5"> so in this case the target</font>
+
+1008
+00:49:47,090 --> 00:49:49,430
+<font color="#CCCCCC">object that is returned from our</font>
+
+1009
+00:49:49,430 --> 00:49:51,500
+validate course method has two
+
+1010
+00:49:51,500 --> 00:49:54,500
+properties<font color="#CCCCCC"> error and value in</font><font color="#E5E5E5"> this case</font>
+
+1011
+00:49:54,500 --> 00:49:57,170
+we<font color="#CCCCCC"> just want the</font><font color="#E5E5E5"> error property so we</font>
+
+1012
+00:49:57,170 --> 00:50:00,200
+put that<font color="#E5E5E5"> between curly braces so this is</font>
+
+1013
+00:50:00,200 --> 00:50:03,410
+equivalent<font color="#E5E5E5"> to getting result that error</font>
+
+1014
+00:50:03,410 --> 00:50:05,960
+<font color="#CCCCCC">one instead of using this</font><font color="#E5E5E5"> notation we</font>
+
+1015
+00:50:05,960 --> 00:50:10,359
+use this notation<font color="#CCCCCC"> okay</font>
+
+1016
+00:50:10,650 --> 00:50:13,289
+and with this we don't<font color="#E5E5E5"> have</font><font color="#CCCCCC"> to repeat</font>
+
+1017
+00:50:13,289 --> 00:50:15,210
+result that error in two<font color="#CCCCCC"> different</font>
+
+1018
+00:50:15,210 --> 00:50:20,460
+places<font color="#E5E5E5"> we can simply use error okay so</font>
+
+1019
+00:50:20,460 --> 00:50:22,680
+this is object destructuring<font color="#E5E5E5"> now we</font>
+
+1020
+00:50:22,680 --> 00:50:25,130
+<font color="#E5E5E5">don't need this first line anymore and</font>
+
+1021
+00:50:25,130 --> 00:50:28,140
+finally before we finish this<font color="#CCCCCC"> lecture</font><font color="#E5E5E5"> we</font>
+
+1022
+00:50:28,140 --> 00:50:29,609
+need to make one<font color="#E5E5E5"> more change in this</font>
+
+1023
+00:50:29,609 --> 00:50:31,740
+code so we need to use<font color="#CCCCCC"> this new way of</font>
+
+1024
+00:50:31,740 --> 00:50:34,529
+validating a course in the route handler
+
+1025
+00:50:34,529 --> 00:50:38,130
+for handling<font color="#E5E5E5"> our HTTP POST requests so</font>
+
+1026
+00:50:38,130 --> 00:50:42,660
+copy this<font color="#E5E5E5"> is our handler for creating a</font>
+
+1027
+00:50:42,660 --> 00:50:44,880
+<font color="#E5E5E5">new course now we don't need to</font><font color="#CCCCCC"> use this</font>
+
+1028
+00:50:44,880 --> 00:50:47,549
+schema here<font color="#E5E5E5"> we moved all</font><font color="#CCCCCC"> that logic to</font>
+
+1029
+00:50:47,549 --> 00:50:50,579
+our validate course function so all
+
+1030
+00:50:50,579 --> 00:50:53,039
+these few lines here<font color="#E5E5E5"> for validating the</font>
+
+1031
+00:50:53,039 --> 00:50:55,410
+request body and sending the<font color="#E5E5E5"> 400 error</font>
+
+1032
+00:50:55,410 --> 00:50:58,410
+<font color="#E5E5E5">I'm</font><font color="#CCCCCC"> going to delete this and paste the</font>
+
+1033
+00:50:58,410 --> 00:50:59,970
+code that<font color="#CCCCCC"> we copied</font><font color="#E5E5E5"> from the other</font>
+
+1034
+00:50:59,970 --> 00:51:03,869
+method so we call validate course use
+
+1035
+00:51:03,869 --> 00:51:06,779
+object<font color="#CCCCCC"> D structure and syntax</font><font color="#E5E5E5"> and if you</font>
+
+1036
+00:51:06,779 --> 00:51:08,819
+have an error<font color="#CCCCCC"> you return</font><font color="#E5E5E5"> the 400</font>
+
+1037
+00:51:08,819 --> 00:51:11,670
+response to the client<font color="#E5E5E5"> now finally let's</font>
+
+1038
+00:51:11,670 --> 00:51:14,430
+test our new endpoint for updating a
+
+1039
+00:51:14,430 --> 00:51:14,940
+course
+
+1040
+00:51:14,940 --> 00:51:19,319
+so back in<font color="#E5E5E5"> postman we need to change the</font>
+
+1041
+00:51:19,319 --> 00:51:23,460
+type of<font color="#E5E5E5"> this HTTP request</font><font color="#CCCCCC"> to put change</font>
+
+1042
+00:51:23,460 --> 00:51:28,019
+the URL and add a valid course ID like
+
+1043
+00:51:28,019 --> 00:51:31,049
+<font color="#CCCCCC">one here we</font><font color="#E5E5E5"> have a pilot course object</font>
+
+1044
+00:51:31,049 --> 00:51:35,239
+with name set<font color="#E5E5E5"> to new course so send and</font>
+
+1045
+00:51:35,239 --> 00:51:37,619
+we get a 200 response<font color="#CCCCCC"> which is</font>
+
+1046
+00:51:37,619 --> 00:51:39,359
+successful and<font color="#CCCCCC"> here is the</font><font color="#E5E5E5"> updated</font>
+
+1047
+00:51:39,359 --> 00:51:43,549
+course so if you open<font color="#CCCCCC"> any new tab and</font>
+
+1048
+00:51:43,549 --> 00:51:48,720
+send an HTTP<font color="#E5E5E5"> GET request to localhost /</font>
+
+1049
+00:51:48,720 --> 00:51:52,410
+<font color="#CCCCCC">api / courses now you should see the</font>
+
+1050
+00:51:52,410 --> 00:51:54,960
+list of<font color="#E5E5E5"> our courses so our first course</font>
+
+1051
+00:51:54,960 --> 00:51:58,109
+<font color="#CCCCCC">it's name is up data perfect now let's</font>
+
+1052
+00:51:58,109 --> 00:52:00,660
+<font color="#CCCCCC">test the</font><font color="#E5E5E5"> other scenarios what if you</font>
+
+1053
+00:52:00,660 --> 00:52:06,089
+send an invalid ID so<font color="#E5E5E5"> 10 send the course</font>
+
+1054
+00:52:06,089 --> 00:52:07,859
+with the given ID was not found<font color="#CCCCCC"> and you</font>
+
+1055
+00:52:07,859 --> 00:52:10,259
+can see the response<font color="#CCCCCC"> is 404</font><font color="#E5E5E5"> which means</font>
+
+1056
+00:52:10,259 --> 00:52:13,470
+not found and finally<font color="#E5E5E5"> what if you send a</font>
+
+1057
+00:52:13,470 --> 00:52:16,200
+valid course ID but an invalid course
+
+1058
+00:52:16,200 --> 00:52:18,390
+object so<font color="#E5E5E5"> I'm gonna remove</font><font color="#CCCCCC"> the name</font>
+
+1059
+00:52:18,390 --> 00:52:22,619
+<font color="#E5E5E5">property</font><font color="#CCCCCC"> send now you can see we have a</font>
+
+1060
+00:52:22,619 --> 00:52:24,240
+bad<font color="#E5E5E5"> request for 400</font>
+
+1061
+00:52:24,240 --> 00:52:26,640
+<font color="#CCCCCC">error and here's error message name is</font>
+
+1062
+00:52:26,640 --> 00:52:29,040
+required<font color="#E5E5E5"> next I'm gonna show</font><font color="#CCCCCC"> you how</font><font color="#E5E5E5"> to</font>
+
+1063
+00:52:29,040 --> 00:52:33,320
+handle HTTP delete requests
+
+1064
+00:52:36,390 --> 00:52:39,509
+so out of<font color="#E5E5E5"> all the crud operations you</font>
+
+1065
+00:52:39,509 --> 00:52:42,210
+have<font color="#E5E5E5"> implemented create read and update</font>
+
+1066
+00:52:42,210 --> 00:52:44,220
+<font color="#CCCCCC">so in this lecture</font><font color="#E5E5E5"> I'm gonna show you</font>
+
+1067
+00:52:44,220 --> 00:52:47,369
+how<font color="#E5E5E5"> to respond to HTTP delete requests</font>
+
+1068
+00:52:47,369 --> 00:52:49,829
+<font color="#E5E5E5">it's very simple and similar to what we</font>
+
+1069
+00:52:49,829 --> 00:52:54,930
+have done so far<font color="#E5E5E5"> so here's our</font><font color="#CCCCCC"> app</font>
+
+1070
+00:52:54,930 --> 00:52:58,170
+object we call the delete method<font color="#E5E5E5"> give it</font>
+
+1071
+00:52:58,170 --> 00:53:01,680
+a<font color="#E5E5E5"> pass that is slash API slash courses</font>
+
+1072
+00:53:01,680 --> 00:53:04,170
+and of course we need<font color="#E5E5E5"> a parameter</font>
+
+1073
+00:53:04,170 --> 00:53:05,519
+because we're working<font color="#CCCCCC"> with a specific</font>
+
+1074
+00:53:05,519 --> 00:53:09,720
+<font color="#E5E5E5">course then a raft Handler request</font><font color="#CCCCCC"> our</font>
+
+1075
+00:53:09,720 --> 00:53:13,619
+response goes to the code block<font color="#E5E5E5"> now here</font>
+
+1076
+00:53:13,619 --> 00:53:15,690
+first we need to<font color="#E5E5E5"> look up the course the</font>
+
+1077
+00:53:15,690 --> 00:53:17,910
+course would<font color="#E5E5E5"> be</font><font color="#CCCCCC"> given ID if it doesn't</font>
+
+1078
+00:53:17,910 --> 00:53:22,460
+<font color="#E5E5E5">exist</font><font color="#CCCCCC"> then we need</font><font color="#E5E5E5"> to return 404</font>
+
+1079
+00:53:22,460 --> 00:53:25,249
+<font color="#E5E5E5">otherwise we're going</font><font color="#CCCCCC"> to delete it and</font>
+
+1080
+00:53:25,249 --> 00:53:29,339
+by convention<font color="#E5E5E5"> return the same course the</font>
+
+1081
+00:53:29,339 --> 00:53:31,829
+course<font color="#E5E5E5"> that was deleted so again I'm</font>
+
+1082
+00:53:31,829 --> 00:53:34,079
+<font color="#E5E5E5">gonna borrow some code from our other</font>
+
+1083
+00:53:34,079 --> 00:53:37,349
+<font color="#E5E5E5">grant handlers to look up the course and</font>
+
+1084
+00:53:37,349 --> 00:53:40,220
+<font color="#CCCCCC">return</font><font color="#E5E5E5"> a 404 error I'm gonna go back for</font>
+
+1085
+00:53:40,220 --> 00:53:44,700
+<font color="#E5E5E5">ramp handler for the HTTP put request so</font>
+
+1086
+00:53:44,700 --> 00:53:47,039
+these first two<font color="#E5E5E5"> lines is for looking up</font>
+
+1087
+00:53:47,039 --> 00:53:50,970
+the course and returning a 404 error<font color="#E5E5E5"> so</font>
+
+1088
+00:53:50,970 --> 00:53:55,559
+copy these<font color="#E5E5E5"> two lines back here that is</font>
+
+1089
+00:53:55,559 --> 00:54:00,690
+our<font color="#E5E5E5"> first part done now to delete a</font>
+
+1090
+00:54:00,690 --> 00:54:03,809
+course first we<font color="#E5E5E5"> need to find the index</font>
+
+1091
+00:54:03,809 --> 00:54:06,599
+of this course in our courses array so
+
+1092
+00:54:06,599 --> 00:54:12,340
+courses<font color="#E5E5E5"> dot index of course</font>
+
+1093
+00:54:12,340 --> 00:54:15,250
+we get the index<font color="#CCCCCC"> store it</font><font color="#E5E5E5"> in a constant</font>
+
+1094
+00:54:15,250 --> 00:54:18,160
+<font color="#E5E5E5">and then</font><font color="#CCCCCC"> we can use this splice method</font>
+
+1095
+00:54:18,160 --> 00:54:21,310
+<font color="#E5E5E5">to remove an</font><font color="#CCCCCC"> object from our courses</font>
+
+1096
+00:54:21,310 --> 00:54:25,180
+<font color="#E5E5E5">array so courses dot splice we go to</font>
+
+1097
+00:54:25,180 --> 00:54:29,770
+this index<font color="#E5E5E5"> and remove</font><font color="#CCCCCC"> one object so this</font>
+
+1098
+00:54:29,770 --> 00:54:32,320
+is the delete part and finally we need
+
+1099
+00:54:32,320 --> 00:54:34,780
+<font color="#CCCCCC">to return the response to the</font><font color="#E5E5E5"> client so</font>
+
+1100
+00:54:34,780 --> 00:54:38,940
+response<font color="#E5E5E5"> let's send this course object</font>
+
+1101
+00:54:38,940 --> 00:54:40,800
+now let's test this
+
+1102
+00:54:40,800 --> 00:54:45,580
+so back in postman let's<font color="#E5E5E5"> change put to</font>
+
+1103
+00:54:45,580 --> 00:54:49,120
+delete first I want<font color="#E5E5E5"> to send an invalid</font>
+
+1104
+00:54:49,120 --> 00:54:53,440
+course ID like<font color="#CCCCCC"> ten send so we get a 404</font>
+
+1105
+00:54:53,440 --> 00:54:55,510
+error<font color="#CCCCCC"> not</font><font color="#E5E5E5"> found with this message</font>
+
+1106
+00:54:55,510 --> 00:54:58,510
+<font color="#CCCCCC">perfect now let's</font><font color="#E5E5E5"> delete the first</font>
+
+1107
+00:54:58,510 --> 00:55:02,710
+course<font color="#E5E5E5"> course with the ID one send so we</font>
+
+1108
+00:55:02,710 --> 00:55:03,970
+get the same course object in the
+
+1109
+00:55:03,970 --> 00:55:06,810
+response<font color="#E5E5E5"> and if we go</font><font color="#CCCCCC"> to our second tab</font>
+
+1110
+00:55:06,810 --> 00:55:10,150
+<font color="#E5E5E5">where we have the list of our courses so</font>
+
+1111
+00:55:10,150 --> 00:55:13,390
+look we have an HTTP GET request to the
+
+1112
+00:55:13,390 --> 00:55:15,520
+send point let's send<font color="#E5E5E5"> this one more time</font>
+
+1113
+00:55:15,520 --> 00:55:18,820
+<font color="#CCCCCC">okay now look we don't have</font><font color="#E5E5E5"> our first</font>
+
+1114
+00:55:18,820 --> 00:55:20,860
+course<font color="#E5E5E5"> anymore we only have courses with</font>
+
+1115
+00:55:20,860 --> 00:55:26,140
+ID<font color="#E5E5E5"> two and three all right</font><font color="#CCCCCC"> before</font><font color="#E5E5E5"> we go</font>
+
+1116
+00:55:26,140 --> 00:55:28,780
+any further<font color="#CCCCCC"> I realize we have a bug or</font>
+
+1117
+00:55:28,780 --> 00:55:31,840
+actually three bugs in this code so look
+
+1118
+00:55:31,840 --> 00:55:34,870
+at the handler<font color="#CCCCCC"> or responding</font><font color="#E5E5E5"> to put</font>
+
+1119
+00:55:34,870 --> 00:55:37,660
+requests to this<font color="#CCCCCC"> endpoint</font><font color="#E5E5E5"> if we don't</font>
+
+1120
+00:55:37,660 --> 00:55:40,000
+have a course with<font color="#CCCCCC"> the given ID we</font>
+
+1121
+00:55:40,000 --> 00:55:43,210
+return the 404 error to the client<font color="#E5E5E5"> but</font>
+
+1122
+00:55:43,210 --> 00:55:45,160
+<font color="#E5E5E5">at this point we should exit this route</font>
+
+1123
+00:55:45,160 --> 00:55:47,560
+handler<font color="#E5E5E5"> otherwise the</font><font color="#CCCCCC"> rest of this code</font>
+
+1124
+00:55:47,560 --> 00:55:50,980
+will be executed<font color="#CCCCCC"> so the proper way to</font>
+
+1125
+00:55:50,980 --> 00:55:52,660
+implement<font color="#E5E5E5"> this round handler is like</font>
+
+1126
+00:55:52,660 --> 00:55:58,180
+this<font color="#E5E5E5"> so if you don't</font><font color="#CCCCCC"> have this course we</font>
+
+1127
+00:55:58,180 --> 00:56:01,780
+return the response and then exit<font color="#E5E5E5"> the</font>
+
+1128
+00:56:01,780 --> 00:56:04,540
+function or a shorter way to<font color="#E5E5E5"> write the</font>
+
+1129
+00:56:04,540 --> 00:56:07,380
+same code<font color="#E5E5E5"> is to put the return here and</font>
+
+1130
+00:56:07,380 --> 00:56:10,420
+then we<font color="#E5E5E5"> don't need</font><font color="#CCCCCC"> the code block so we</font>
+
+1131
+00:56:10,420 --> 00:56:15,850
+<font color="#CCCCCC">can put everything</font><font color="#E5E5E5"> in one line okay now</font>
+
+1132
+00:56:15,850 --> 00:56:18,010
+to make this code cleaner<font color="#E5E5E5"> let's use the</font>
+
+1133
+00:56:18,010 --> 00:56:20,410
+same technique in case we have an
+
+1134
+00:56:20,410 --> 00:56:25,900
+invalid request<font color="#CCCCCC"> so we simply return</font>
+
+1135
+00:56:25,900 --> 00:56:28,529
+and then we don't<font color="#E5E5E5"> need the code lock</font>
+
+1136
+00:56:28,529 --> 00:56:33,130
+<font color="#E5E5E5">anymore that's much more elegant</font><font color="#CCCCCC"> you</font>
+
+1137
+00:56:33,130 --> 00:56:36,220
+have the same issue<font color="#E5E5E5"> in the handler for</font>
+
+1138
+00:56:36,220 --> 00:56:38,529
+delete requests so if<font color="#E5E5E5"> you don't have a</font>
+
+1139
+00:56:38,529 --> 00:56:41,789
+course here we should<font color="#E5E5E5"> return immediately</font>
+
+1140
+00:56:41,789 --> 00:56:46,420
+<font color="#E5E5E5">the same is</font><font color="#CCCCCC"> true when getting a</font><font color="#E5E5E5"> single</font>
+
+1141
+00:56:46,420 --> 00:56:48,309
+course so if we don't have a course with
+
+1142
+00:56:48,309 --> 00:56:51,279
+the given ID<font color="#E5E5E5"> we return the 404 error and</font>
+
+1143
+00:56:51,279 --> 00:56:54,579
+<font color="#E5E5E5">also return from this function</font>
+
+1144
+00:56:54,579 --> 00:56:57,910
+<font color="#CCCCCC">immediately now finally let's have a</font>
+
+1145
+00:56:57,910 --> 00:57:00,609
+look at the handler<font color="#CCCCCC"> for HTTP POST</font>
+
+1146
+00:57:00,609 --> 00:57:04,240
+requests here it is again<font color="#E5E5E5"> I'm gonna use</font>
+
+1147
+00:57:04,240 --> 00:57:06,190
+<font color="#E5E5E5">the same technique</font><font color="#CCCCCC"> to clean up this code</font>
+
+1148
+00:57:06,190 --> 00:57:10,059
+<font color="#E5E5E5">so if you have an error we simply</font><font color="#CCCCCC"> return</font>
+
+1149
+00:57:10,059 --> 00:57:14,680
+and get rid of the<font color="#E5E5E5"> extra noise in the</font>
+
+1150
+00:57:14,680 --> 00:57:19,319
+code that's<font color="#E5E5E5"> much better</font>
+
+1151
+00:57:21,910 --> 00:57:25,520
+<font color="#E5E5E5">all right now it's time for an exercise</font>
+
+1152
+00:57:25,520 --> 00:57:27,920
+so from this lecturer<font color="#E5E5E5"> we're gonna start</font>
+
+1153
+00:57:27,920 --> 00:57:30,290
+<font color="#CCCCCC">building the back-end</font><font color="#E5E5E5"> services for our</font>
+
+1154
+00:57:30,290 --> 00:57:32,890
+<font color="#E5E5E5">VIP little acacia as I told you before</font>
+
+1155
+00:57:32,890 --> 00:57:36,020
+<font color="#CCCCCC">Whitley</font><font color="#E5E5E5"> is an imaginary service for</font>
+
+1156
+00:57:36,020 --> 00:57:38,359
+renting out movies<font color="#E5E5E5"> so throughout this</font>
+
+1157
+00:57:38,359 --> 00:57:40,580
+course<font color="#E5E5E5"> we're going</font><font color="#CCCCCC"> to</font><font color="#E5E5E5"> build the backend</font>
+
+1158
+00:57:40,580 --> 00:57:42,200
+of<font color="#CCCCCC"> Whitley</font><font color="#E5E5E5"> bit by bit</font>
+
+1159
+00:57:42,200 --> 00:57:45,349
+your first task is to<font color="#CCCCCC"> create a</font><font color="#E5E5E5"> service</font>
+
+1160
+00:57:45,349 --> 00:57:48,500
+from managing the list of genres so each
+
+1161
+00:57:48,500 --> 00:57:51,470
+movie as a genre<font color="#E5E5E5"> like</font><font color="#CCCCCC"> action horror</font>
+
+1162
+00:57:51,470 --> 00:57:54,440
+<font color="#E5E5E5">whatever we should have an</font><font color="#CCCCCC"> endpoint</font><font color="#E5E5E5"> for</font>
+
+1163
+00:57:54,440 --> 00:57:56,599
+<font color="#CCCCCC">getting the</font><font color="#E5E5E5"> list of all</font><font color="#CCCCCC"> genres because</font>
+
+1164
+00:57:56,599 --> 00:57:58,550
+<font color="#E5E5E5">somewhere in our client applications</font>
+
+1165
+00:57:58,550 --> 00:58:00,859
+perhaps<font color="#CCCCCC"> we have a drop-down list</font><font color="#E5E5E5"> for the</font>
+
+1166
+00:58:00,859 --> 00:58:03,320
+user to<font color="#E5E5E5"> select a genre so we need an</font>
+
+1167
+00:58:03,320 --> 00:58:05,450
+endpoint<font color="#E5E5E5"> to get all the genres</font><font color="#CCCCCC"> we should</font>
+
+1168
+00:58:05,450 --> 00:58:07,730
+also be<font color="#CCCCCC"> able to</font><font color="#E5E5E5"> create a new genre as</font>
+
+1169
+00:58:07,730 --> 00:58:10,520
+<font color="#E5E5E5">well as update or delete an existing one</font>
+
+1170
+00:58:10,520 --> 00:58:13,460
+<font color="#E5E5E5">so before going any further I want</font><font color="#CCCCCC"> you</font>
+
+1171
+00:58:13,460 --> 00:58:15,109
+to put what you have learned<font color="#E5E5E5"> so far in</font>
+
+1172
+00:58:15,109 --> 00:58:16,790
+practice so even if you're an
+
+1173
+00:58:16,790 --> 00:58:19,280
+experienced developer<font color="#CCCCCC"> don't</font><font color="#E5E5E5"> say no</font><font color="#CCCCCC"> mosh</font>
+
+1174
+00:58:19,280 --> 00:58:21,440
+I know how to do this this<font color="#CCCCCC"> is so easy I</font>
+
+1175
+00:58:21,440 --> 00:58:23,720
+know it's easy<font color="#E5E5E5"> but what matters now is</font>
+
+1176
+00:58:23,720 --> 00:58:25,310
+that<font color="#E5E5E5"> I want you to get used to</font><font color="#CCCCCC"> this</font>
+
+1177
+00:58:25,310 --> 00:58:28,280
+<font color="#CCCCCC">theme tax so go ahead start a new</font>
+
+1178
+00:58:28,280 --> 00:58:30,680
+project from scratch<font color="#CCCCCC"> call it</font><font color="#E5E5E5"> bitly and</font>
+
+1179
+00:58:30,680 --> 00:58:33,320
+build this HTTP service for managing the
+
+1180
+00:58:33,320 --> 00:58:35,690
+list of genres<font color="#CCCCCC"> you can see my solution</font>
+
+1181
+00:58:35,690 --> 00:00:00,000
+<font color="#CCCCCC">attached</font><font color="#E5E5E5"> to this lecture</font>
+

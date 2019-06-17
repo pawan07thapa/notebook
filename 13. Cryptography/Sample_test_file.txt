@@ -1,0 +1,358 @@
+`timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: 
+// 
+// Create Date:    22:29:33 03/31/2018 
+// Design Name: 
+// Module Name:    data_uart 
+// Project Name: 
+// Target Devices: 
+// Tool versions: 
+// Description: 
+//
+// Dependencies: 
+//
+// Revision: 
+// Revision 0.01 - File Created
+// Additional Comments: 
+//
+//////////////////////////////////////////////////////////////////////////////////
+module data_uart(
+   input i_Clock,    // Clock of FPGA received 
+	input i_Tx_DV,    // 1 means data to be transmitted and 0 nothing
+	input i_Rx_Serial,
+	output reg o_Tx_Serial,
+	output reg lcd_rs, 
+	output reg lcd_rw, 
+	output reg lcd_e, 
+	output reg lcd_4,
+	output reg lcd_5, 
+	output reg lcd_6, 
+	output reg lcd_7
+   );
+  
+  parameter CLKS_PER_BIT= 8'b01010111;  // input clock / baud rate=  87 
+  parameter s_IDLE= 2'b00;        
+  parameter s_TX_START_BIT= 2'b01;		 // Start bit of 
+  parameter s_TX_DATA_BITS= 2'b10;		 //  
+  parameter s_TX_STOP_BIT= 2'b11;       // Stop bit of transmitter site
+  parameter s_RX_START_BIT = 2'b01;
+  parameter s_RX_DATA_BITS = 2'b10;
+  parameter s_RX_STOP_BIT  = 2'b11;
+
+  //reg [7:0] 	i_Tx_Byte[0:7];	// data to be transmitted i.e. character for now
+  reg [63:0] 	i_Tx_Byte ="VLSIALAB";
+  reg [63:0]	o_Rx_Byte="        ";
+  reg [1:0]    r_STATE1 = 0;
+  reg [7:0]    r_Clock_Count1 = 0;
+  reg [2:0]    r_Bit_Index1 = 0;
+  reg [7:0]    r_Tx_Data = 0;
+  reg [2:0] 	ind =3'b000;
+  reg [30:0] div=0;
+  reg  r_Rx_Data_R = 1'b1;
+  reg  r_Rx_Data   = 1'b1;
+  reg	[2:0] i=3'b111;
+   
+  reg [7:0] r_Clock_Count = 0;
+  reg [2:0] r_Bit_Index   = 0; //8 bits total
+  reg [7:0] r_Rx_Byte     = 0;
+  reg [1:0] r_STATE     = 0;
+  
+   reg [26:0] count=0;
+	reg lcd_busy=1;
+	reg lcd_stb;
+	reg [5:0] lcd_code;
+	reg [6:0] lcd_stuff;
+   always @(posedge i_Clock)
+    begin
+      case (r_STATE1)
+        s_IDLE :
+          begin
+            o_Tx_Serial <= 1'b1;         // Drive Line High for Idle
+            r_Clock_Count1 <= 0;
+            r_Bit_Index1 <= 0;
+            if (i_Tx_DV == 1'b1)
+              begin
+				  case(ind)
+				  3'b000:
+						r_Tx_Data <= i_Tx_Byte[7:0];
+					3'b001:
+						r_Tx_Data <= i_Tx_Byte[15:8];
+					3'b010:
+						r_Tx_Data <= i_Tx_Byte[23:16];
+					3'b011:
+						r_Tx_Data <= i_Tx_Byte[31:24];
+					3'b100:
+						r_Tx_Data <= i_Tx_Byte[39:32];
+					3'b101:
+						r_Tx_Data <= i_Tx_Byte[47:40];
+					3'b110:
+						r_Tx_Data <= i_Tx_Byte[55:48];
+					3'b111:
+						r_Tx_Data <= i_Tx_Byte[63:56];
+					endcase
+					ind <= ind +1;
+                r_STATE1 <= s_TX_START_BIT;
+              end
+            else
+              r_STATE1 <= s_IDLE;
+          end // case: s_IDLE
+         
+        // Send out Start Bit. Start bit = 0
+        s_TX_START_BIT :
+          begin
+            o_Tx_Serial <= 1'b0;
+             
+            // Wait CLKS_PER_BIT-1 clock cycles for start bit to finish
+            if (r_Clock_Count1 < CLKS_PER_BIT-1)
+              begin
+                r_Clock_Count1 <= r_Clock_Count1 + 1;
+                r_STATE1 <= s_TX_START_BIT;
+              end
+            else
+              begin
+                r_Clock_Count1 <= 0;
+                r_STATE1 <= s_TX_DATA_BITS;
+              end
+          end // case: s_TX_START_BIT
+         
+        // Wait CLKS_PER_BIT-1 clock cycles for data bits to finish         
+        s_TX_DATA_BITS :
+          begin
+            o_Tx_Serial <= r_Tx_Data[r_Bit_Index];
+            if (r_Clock_Count1 < CLKS_PER_BIT-1)
+              begin
+                r_Clock_Count1 <= r_Clock_Count1 + 1;
+                r_STATE1 <= s_TX_DATA_BITS;
+              end
+            else
+              begin
+                r_Clock_Count1 <= 0;
+                // Check if we have sent out all bits
+                if (r_Bit_Index1 < 7)
+                  begin
+                    r_Bit_Index1 <= r_Bit_Index1+1;
+                    r_STATE1 <= s_TX_DATA_BITS;
+                  end
+                else
+                  begin
+                    r_Bit_Index1 <= 0;
+                    r_STATE1 <= s_TX_STOP_BIT;
+                  end
+              end
+          end // case: s_TX_DATA_BITS
+         
+        // Send out Stop bit.  Stop bit = 1
+        s_TX_STOP_BIT :
+          begin
+            o_Tx_Serial <= 1'b1;
+            // Wait CLKS_PER_BIT-1 clock cycles for Stop bit to finish
+            if (r_Clock_Count1 < CLKS_PER_BIT-1)
+              begin
+                r_Clock_Count1 <= r_Clock_Count1+1;
+                r_STATE1 <= s_TX_STOP_BIT;
+              end
+            else
+              begin
+                
+					div <= div+1;
+					if (div==50)
+					begin
+						div<=0;
+						r_Clock_Count1 <= 0;
+						r_STATE1 <= s_IDLE;
+					end
+					else
+					begin
+						r_STATE1 <= s_TX_STOP_BIT;
+					end
+					
+				end
+          end // case: s_Tx_STOP_BIT
+          
+        default :
+          r_STATE1 <= s_IDLE;
+      endcase
+    end
+   
+  // Purpose: Double-register the incoming data.
+  // This allows it to be used in the UART RX Clock Domain.
+  // (It removes problems caused by metastability)
+  always @(posedge i_Clock)
+    begin
+      r_Rx_Data_R <= i_Rx_Serial;
+      r_Rx_Data <= r_Rx_Data_R;
+    end
+   
+   
+  // Purpose: Control RX state machine
+  always @(posedge i_Clock)
+    begin
+       
+      case (r_STATE)
+        s_IDLE :
+          begin
+            r_Clock_Count <= 0;
+            r_Bit_Index <= 0;
+             
+            if (r_Rx_Data == 1'b0)          // Start bit detected
+              r_STATE <= s_RX_START_BIT;
+            else
+              r_STATE <= s_IDLE;
+          end
+         
+        // Check middle of start bit to make sure it's still low
+        s_RX_START_BIT :
+          begin
+            if (r_Clock_Count == (CLKS_PER_BIT-1)/2)
+              begin
+                if (r_Rx_Data == 1'b0)
+                  begin
+                    r_Clock_Count <= 0;  // reset counter, found the middle
+                    r_STATE <= s_RX_DATA_BITS;
+                  end
+                else
+                  r_STATE <= s_IDLE;
+              end
+            else
+              begin
+                r_Clock_Count <= r_Clock_Count + 1;
+                r_STATE <= s_RX_START_BIT;
+              end
+          end // case: s_RX_START_BIT
+         
+         
+        // Wait CLKS_PER_BIT-1 clock cycles to sample serial data
+        s_RX_DATA_BITS :
+          begin
+            if (r_Clock_Count < CLKS_PER_BIT-1)
+              begin
+                r_Clock_Count <= r_Clock_Count + 1;
+                r_STATE <= s_RX_DATA_BITS;
+              end
+            else
+              begin
+                r_Clock_Count          <= 0;
+                r_Rx_Byte[r_Bit_Index] <= r_Rx_Data;
+                 
+                // Check if we have received all bits
+                if (r_Bit_Index < 7)
+                  begin
+                    r_Bit_Index <= r_Bit_Index + 1;
+                    r_STATE <= s_RX_DATA_BITS;
+                  end
+                else
+                  begin
+                    r_Bit_Index <= 0;
+							i <= i+1;
+                    r_STATE <= s_RX_STOP_BIT;
+                  end
+              end
+          end // case: s_RX_DATA_BITS
+     
+        // Receive Stop bit.  Stop bit = 1
+        s_RX_STOP_BIT :
+          begin
+            // Wait CLKS_PER_BIT-1 clock cycles for Stop bit to finish
+				case (i)
+					0: o_Rx_Byte[7:0]=r_Rx_Byte;
+					1: o_Rx_Byte[15:8]=r_Rx_Byte;
+					2: o_Rx_Byte[23:16]=r_Rx_Byte;
+					3: o_Rx_Byte[31:24]=r_Rx_Byte;
+					4: o_Rx_Byte[39:32]=r_Rx_Byte;
+					5: o_Rx_Byte[47:40]=r_Rx_Byte;
+					6: o_Rx_Byte[55:48]=r_Rx_Byte;
+					7: o_Rx_Byte[63:56]=r_Rx_Byte;
+				endcase
+            if (r_Clock_Count < CLKS_PER_BIT-1)
+              begin
+                r_Clock_Count <= r_Clock_Count + 1;
+                r_STATE <= s_RX_STOP_BIT;
+              end
+            else
+              begin
+                r_Clock_Count <= 0;
+                r_STATE <= s_IDLE;
+              end
+          end // case: s_RX_STOP_BIT
+        default :
+          r_STATE<= s_IDLE;
+         
+      endcase
+    end   
+   
+  //assign o_Rx_Byte=r_Rx_Byte;
+   always @ (posedge i_Clock) 
+	begin
+count <= count + 1;
+case (count[24:19])
+0: lcd_code <= 6'b000010; // function set
+1: lcd_code <= 6'b000010;
+2: lcd_code <= 6'b001100;
+3: lcd_code <= 6'b000000; // display on/off control
+4: lcd_code <= 6'b001100;
+5: lcd_code <= 6'b000000; // display clear
+6: lcd_code <= 6'b000001;
+7: lcd_code <= 6'b000000; // entry mode set
+8: lcd_code <= 6'b000110;
+9: lcd_code <= 32+o_Rx_Byte[63:60]; // A
+10: lcd_code <= 32+o_Rx_Byte[59:56];
+11: lcd_code <= 32+o_Rx_Byte[55:52]; // y
+12: lcd_code <= 32+o_Rx_Byte[51:48];
+13: lcd_code <= 32+o_Rx_Byte[47:44]; // u
+14: lcd_code <= 32+o_Rx_Byte[43:40];
+15: lcd_code <= 32+o_Rx_Byte[39:36]; // s
+16: lcd_code <= 32+o_Rx_Byte[35:32];
+17: lcd_code <= 32+o_Rx_Byte[31:28]; // h
+18: lcd_code <= 32+o_Rx_Byte[27:24];
+19: lcd_code <= 32+o_Rx_Byte[23:20]; //  i
+20: lcd_code <= 32+o_Rx_Byte[19:16];
+21: lcd_code <= 32+o_Rx_Byte[15:12];
+22: lcd_code <= 32+o_Rx_Byte[11:8];
+23: lcd_code <= 32+o_Rx_Byte[7:4];
+24: lcd_code <= 32+o_Rx_Byte[3:0];
+25: lcd_code <= 6'h22;
+26: lcd_code <= 6'h20;
+27: lcd_code <= 6'h22;
+28: lcd_code <= 6'h20;
+29: lcd_code <= 6'h22;
+30: lcd_code <= 6'h20;
+31: lcd_code <= 6'h22;
+32: lcd_code <= 6'h20;
+default: begin lcd_code <= 6'b010000;end
+endcase
+if (lcd_rw)
+lcd_busy <= 0;
+lcd_stb <= ^count[18:17] & ~lcd_rw & lcd_busy; 
+lcd_stuff <= {lcd_stb,lcd_code};
+{lcd_e,lcd_rs,lcd_rw,lcd_7,lcd_6,lcd_5,lcd_4}<=lcd_stuff;
+end
+
+endmodule // uart_rx
+
+
+
+
+
+
+
+ucf
+
+
+
+
+
+
+
+NET "i_Clock" LOC = "C9";
+NET "i_Rx_Serial" LOC = "A6";
+NET "o_Tx_Serial" LOC = "B6";
+NET "i_Tx_DV" LOC = "L13";
+NET "lcd_rs" LOC="L18";
+NET "lcd_rw" LOC="L17";
+NET "lcd_7" LOC="M15";
+NET "lcd_6" LOC="P17";
+NET "lcd_5" LOC="R16";
+NET "lcd_4" LOC="R15";
+NET "lcd_e" LOC="M18";
